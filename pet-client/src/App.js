@@ -1,45 +1,74 @@
 import React from 'react';
-import mysql from 'mysql'
-import logo from './logo.svg';
+import ReactDOM from 'react-dom';
+
+import Alert from 'react-bootstrap/Alert';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
 import './App.css';
 
 function App() {
+  async function handleLogin(e) {
+    e.preventDefault();
+    const username = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-  console.log('Hello from Docker!');
-  var con = mysql.createConnection({
-      host: "db",
-      user: "bessy",
-      password: "the-cow"
-  });
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  async function waitForConnection() {
-      console.log("waiting...")
-      await sleep(10000)
-      console.log('Testing MySQL connection...');
-      con.connect(async function(err) {
-          if (err) throw err;
-          console.log("Connected!");
-      });
+    const res = await fetch("/api/auth", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "username": username,
+        "password": password
+      })
+    });
+
+    let message, alertVariant;
+    if (res.status === 401) {
+      message = "Invalid username or password. Please try again.";
+      alertVariant = "danger";
+    }
+    else if (res.status !== 200) {
+      message = "An unknown error occurred. Please try again later.";
+      alertVariant = "warning";
+    }
+    else {
+      const body = await res.json();
+      message = "Success! Your token is " + body.token + ".";
+      alertVariant = "success";
+    }
+
+    ReactDOM.render(<Alert variant={alertVariant}>{message}</Alert>, document.getElementById("login-result"))
   }
-  waitForConnection()
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to change.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container className="login-container d-flex">
+      <Container className="row justify-content-center align-self-center">
+        <Form id="login-form" onSubmit={handleLogin}>
+          <h3>Sign in</h3>
+
+          <Form.Group controlId="email">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" />
+          </Form.Group>
+
+          <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Password" />
+          </Form.Group>
+          <Form.Group controlId="formBasicCheckbox">
+            <Form.Check type="checkbox" label="Remember me" />
+          </Form.Group>
+          <div id="login-result" />
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </Container>
+    </Container>
   );
 }
 
