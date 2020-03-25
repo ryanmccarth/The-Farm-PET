@@ -1,12 +1,14 @@
 {
-  "name": "sample-app",
-  "version": "0.1.0",
+  "name": "pet-app",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "bootstrap": "^4.4.1",
     "react": "^16.13.0",
+    "react-bootstrap": "^1.0.0",
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0"
   },
@@ -16,6 +18,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://api:3001",
   "eslintConfig": {
     "extends": "react-app"
   },

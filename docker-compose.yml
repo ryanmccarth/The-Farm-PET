@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  # our backend express api
+  api:
+    build: pet-api
+    ports:
+      - '3001:3001'
+    environment:
+      - API_PORT=3001
+  # for our static frontend built with react
+  client:
+    build: pet-client
+    ports:
+      - '3000:3000'
+  # separate container for mysql db
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DB: 'db'
+      MYSQL_USER: 'bessy'
+      MYSQL_PASSWORD: 'the-cow'
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - pet-db:/var/lib/mysql
+
+volumes:
+  pet-db:
