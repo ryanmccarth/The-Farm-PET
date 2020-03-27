@@ -8,7 +8,7 @@ Contains everything for a user to request reviews. Specifically, under this comp
 
 */
 
-class requests extends Component {
+class RequestReviews extends Component {
   state = {
     //company value
     //page number?
@@ -26,4 +26,4 @@ class requests extends Component {
   }
 }
 
-export default requests;
+export default RequestReviews;
