@@ -1,75 +1,39 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-
-import Alert from 'react-bootstrap/Alert';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-
 import './App.css';
+import ReadContent from './ReadContent';
+import logo from './Farm.png';
 
-function App() {
-  async function handleLogin(e) {
-    e.preventDefault();
-    const username = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    const res = await fetch("/api/auth", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        "username": username,
-        "password": password
-      })
-    });
-
-    let message, alertVariant;
-    if (res.status === 401) {
-      message = "Invalid username or password. Please try again.";
-      alertVariant = "danger";
-    }
-    else if (res.status !== 200) {
-      message = "An unknown error occurred. Please try again later.";
-      alertVariant = "warning";
-    }
-    else {
-      const body = await res.json();
-      message = "Success! Your token is " + body.token + ".";
-      alertVariant = "success";
-    }
-
-    ReactDOM.render(<Alert variant={alertVariant}>{message}</Alert>, document.getElementById("login-result"))
-  }
-
-  return (
-    <Container className="login-container d-flex">
-      <Container className="row justify-content-center align-self-center">
-        <Form id="login-form" onSubmit={handleLogin}>
-          <h3>Sign in</h3>
-
-          <Form.Group controlId="email">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
-          </Form.Group>
-
-          <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
-          </Form.Group>
-          <Form.Group controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Remember me" />
-          </Form.Group>
-          <div id="login-result" />
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
-      </Container>
-    </Container>
-  );
+export default function App(){
+  const buttonStyle = {
+    marginRight: '10px',
+    backgroundColor: '#2593F2',
+    border: '1px solid black',
+    boxShadow: '2px 2px blue',
+    borderRadius: '5px'
+   };
+   const logoStyle = {
+     border: '1px solid black',
+     backgroundColor: '#2593F2',
+     color: 'white',
+     marginRight: '1100px',
+     paddingTop: '60px',
+     align: 'center',
+     borderRadius: '5px',
+     boxShadow: '2px 2px blue'
+   };
+  return(
+    <div class = "pageColor">
+      <div class = 'nav'>
+          <a style = {logoStyle}><img src={logo} className="App-logo" alt="logo" /></a>
+          <button style = {buttonStyle}> <a className = "buttons">Home</a></button>
+          <button style = {buttonStyle}> <a className = "buttons">Help</a> </button>
+          <button style = {buttonStyle}> <a className = "buttons">Inbox</a> </button>
+      </div>
+      <div class = 'content'>
+        <h1>Your Reviews:</h1>
+        <ReadContent /> 
+      </div>
+      <div class = "filler"></div>
+    </div>
+  )
 }
-
-export default App;
