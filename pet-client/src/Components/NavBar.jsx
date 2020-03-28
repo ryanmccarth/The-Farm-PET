@@ -32,7 +32,7 @@ class NavBar extends Component {
                 href="#top"
                 onClick={() => this.pageHandler("login")}
               >
-                Home <span className="sr-only">(current)</span>
+                Login <span className="sr-only">(current)</span>
               </a>
             </li>
             <li className="nav-item">
