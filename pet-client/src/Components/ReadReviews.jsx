@@ -1,6 +1,6 @@
 import React from "react";
-import "./ReadContent.css";
-import data from "./sample.json";
+import "./temp/ReadContent.css";
+import data from "./temp/sample.json";
 
 class ReadReviews extends React.Component {
   constructor(props) {
