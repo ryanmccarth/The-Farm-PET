@@ -1,22 +1,13 @@
 import React, { Component } from "react";
 
 class NavBar extends Component {
-  state = {};
-
-  homeHandler() {
-    this.props.update("login");
-  }
-  readHandler() {
-    this.props.update("read");
-  }
-  requestHandler() {
-    this.props.update("request");
-  }
-  writeHandler() {
-    this.props.update("write");
+  pageHandler(page) {
+    this.props.update(page);
   }
 
   render() {
+    //TODO: Add different styling depending on the current page (found in this.props.page)
+
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <span className="navbar-brand">PET</span>
@@ -36,22 +27,38 @@ class NavBar extends Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <a className="nav-link" href="#top" onClick={this.homeHandler}>
+              <a
+                className="nav-link"
+                href="#top"
+                onClick={() => this.pageHandler("login")}
+              >
                 Home <span className="sr-only">(current)</span>
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#top" onClick={this.readHandler}>
+              <a
+                className="nav-link"
+                href="#top"
+                onClick={() => this.pageHandler("read")}
+              >
                 Read
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#top" onClick={this.requestHandler}>
+              <a
+                className="nav-link"
+                href="#top"
+                onClick={() => this.pageHandler("request")}
+              >
                 Request
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#top" onClick={this.writeHandler}>
+              <a
+                className="nav-link"
+                href="#top"
+                onClick={() => this.pageHandler("write")}
+              >
                 Write
               </a>
             </li>

@@ -6,30 +6,22 @@ import Request from "./RequestReviews";
 import Write from "./WriteReviews";
 
 class Content extends Component {
-  state = {
-    contentValue: ""
-  };
-
-  componentDidMount() {
-    state.contentValue = this.props.contentValue;
-  }
-
-  displayContent(){
-    if(this.state==="login"){
-        return <Login />;
+  displayContent() {
+    if (this.props.page === "login") {
+      return <Login />;
     }
-    if(this.state==="read"){
-        return <Read />;
+    if (this.props.page === "read") {
+      return <Read />;
     }
-    if(this.state==="request"){
-        return <Request />;
+    if (this.props.page === "request") {
+      return <Request />;
     }
-    if(this.state==="write"){
-        return <Write />;
+    if (this.props.page === "write") {
+      return <Write />;
     }
   }
   render() {
-    return {displayContent()};
+    return this.displayContent();
   }
 }
 

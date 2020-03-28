@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
@@ -48,7 +49,7 @@ class Login extends Component {
     return (
       <Container className="login-container d-flex">
         <Container className="row justify-content-center align-self-center">
-          <Form id="login-form" onSubmit={handleLogin}>
+          <Form id="login-form" onSubmit={this.handleLogin}>
             <h3>Sign in</h3>
 
             <Form.Group controlId="email">

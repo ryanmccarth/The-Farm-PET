@@ -9,15 +9,15 @@ class App extends Component {
     currentPage: "login"
   };
 
-  updateContent(navDestination) {
-    this.currentPage = navDestination;
-  }
+  updateContent = navDestination => {
+    this.setState({ currentPage: navDestination });
+  };
 
   render() {
     return (
       <React.Fragment>
-        <NavBar page={this.currentPage} update={this.updateContent} />
-        <Cont page={this.currentPage} />
+        <Nav page={this.state.currentPage} update={this.updateContent} />
+        <Cont page={this.state.currentPage} />
       </React.Fragment>
     );
   }
