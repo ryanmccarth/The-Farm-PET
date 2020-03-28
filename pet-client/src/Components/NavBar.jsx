@@ -63,7 +63,9 @@ class NavBar extends Component {
               </a>
             </li>
             <li className="nav-item">
-              <button className="nav-link disabled">Dashboard</button>
+              <a href="#top" className="nav-link disabled">
+                Dashboard
+              </a>
             </li>
           </ul>
         </div>
