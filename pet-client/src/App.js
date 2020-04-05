@@ -5,67 +5,51 @@ import Alert from 'react-bootstrap/Alert';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
 
 import './App.css';
 
 function App() {
-  async function handleLogin(e) {
+  let revieweename = "Joe Smith";
+  // we should implement something to get this from the database (depending on prev screen)
+
+  async function submitReview(e)
+  {
     e.preventDefault();
-    const username = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    const res = await fetch("/api/auth", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        "username": username,
-        "password": password
-      })
-    });
-
-    let message, alertVariant;
-    if (res.status === 401) {
-      message = "Invalid username or password. Please try again.";
-      alertVariant = "danger";
-    }
-    else if (res.status !== 200) {
-      message = "An unknown error occurred. Please try again later.";
-      alertVariant = "warning";
-    }
-    else {
-      const body = await res.json();
-      message = "Success! Your token is " + body.token + ".";
-      alertVariant = "success";
-    }
-
-    ReactDOM.render(<Alert variant={alertVariant}>{message}</Alert>, document.getElementById("login-result"))
+    console.log("success");
+    // this doesn't work for some reason. at least not in the git console. ideas?
+    // (talking about the console.log)
   }
 
+  // UNSURE HOW TO CENTER THE FORM VERTICALLY! (see code below) || ||
+  //                                                            \/ \/
+
   return (
-    <Container className="login-container d-flex">
+    <Container className="write-container d-flex">
       <Container className="row justify-content-center align-self-center">
-        <Form id="login-form" onSubmit={handleLogin}>
-          <h3>Sign in</h3>
+        <Form id="write-review-form" onSubmit={submitReview}>
+          <h4>You are writing a review for {revieweename}</h4> 
 
-          <Form.Group controlId="email">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+          <Form.Group controlId="write-review-textarea">
+            <Form.Control as="textarea" rows="6" placeholder = "Write review here..." />
           </Form.Group>
-
-          <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
-          </Form.Group>
-          <Form.Group controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Remember me" />
-          </Form.Group>
-          <div id="login-result" />
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
+          
+          <Row className="justify-content-between">
+            <Button 
+            variant = "primary"
+            onClick = {console.log("back button pressed")}>
+              Go back
+            </Button>
+            
+            <Button 
+            variant = "primary"
+            type = "submit">
+              Submit
+            </Button>
+          </Row>
+          <Row>
+            <div id = "submitresult"></div>
+          </Row>
         </Form>
       </Container>
     </Container>
