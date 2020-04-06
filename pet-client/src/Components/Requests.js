@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
-import "./Requests.css";
+import "./temp/Requests.css";
 
 /*
 Contains everything for a user to request reviews. Specifically, under this component, other components include:
