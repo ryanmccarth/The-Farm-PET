@@ -1,0 +1,26 @@
+.Button {
+  color: black;
+  background-color: blue;
+  border-radius: 5px;
+}
+
+.Label {
+  background-color: #7e54fc;
+  padding-right: 10px;
+  color: black;
+  border: 2px solid black;
+}
+
+.DataSpacing {
+  border: 1px solid black;
+  border-style: none none solid;
+  background-color: white;
+}
+
+.Scroll {
+  overflow: scroll;
+  height: 375px;
+  width: 800px;
+  background-color: #8c8994;
+  border: 1px solid black;
+}
