@@ -9,7 +9,7 @@
     "bootstrap": "^4.4.1",
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0",
-    "react-bootstrap-table-next": "file:src/Components/react-bootstrap-table-next",
+    "react-bootstrap-table-next": "^4.0.0",
     "react-bootstrap-table2-toolkit": "^2.1.2",
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0"
