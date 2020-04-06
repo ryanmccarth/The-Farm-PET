@@ -1,0 +1,18 @@
+#write-container {
+    max-width: 550px;
+    margin-top: 32px;
+}
+
+#write-review-form {
+    margin-top: 16px;
+}
+
+#write-btn-back {
+    display: table-cell;
+    white-space: nowrap;
+}
+
+#write-btn-submit {
+    display: table-cell;
+    width: 100%;
+}
