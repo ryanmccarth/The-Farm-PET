@@ -3,71 +3,89 @@
     "reviewer" : "Harold",
     "review" : "Frankly, John is the worst person I've ever worked with...",
     "date" : "01/23/20",
-    "fullReview" : "sample text button 1"
+    "fullReview" : "Frankly, John is the worst person I've ever worked with, [REMAINING REVIEW HERE]"
   }, {
     "recipient" : "Harold",
     "reviewer" : "Suzanne",
     "review" : "If Harold doesn't stop complaining about John...",
     "date" : "01/25/20",
-    "fullReview" : "sample text button 2"
+    "fullReview" : "If Harold doesn't stop complaining about John, [REMAINING REVIEW HERE]"
   }, {
     "recipient" : "Suzanne",
     "reviewer" : "John",
     "review" : "This department works wonderfully as a team and everyone gets along...",
     "date" : "01/30/20",
-    "fullReview" : "sample text button 3"
+    "fullReview" : "This department works wonderfully as a team and everyone gets along [REMAINING REVIEW HERE]"
   }, {
-    "recipient" : "John",
-    "reviewer" : "Harold",
-    "review" : "Frankly, John is the worst person I've ever worked with...",
-    "date" : "01/23/20",
-    "fullReview" : "sample text button 4"
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 4"
   }, {
-    "recipient" : "Harold",
-    "reviewer" : "Suzanne",
-    "review" : "If Harold doesn't stop complaining about John...",
-    "date" : "01/25/20",
-    "fullReview" : "sample text button 5"
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 5"
   }, {
-    "recipient" : "Suzanne",
-    "reviewer" : "John",
-    "review" : "This department works wonderfully as a team and everyone gets along...",
-    "date" : "01/30/20",
-    "fullReview" : "sample text button 6"
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 6"
   }, {
-    "recipient" : "John",
-    "reviewer" : "Harold",
-    "review" : "Frankly, John is the worst person I've ever worked with...",
-    "date" : "01/23/20",
-    "fullReview" : "sample text button 7"
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 7"
   }, {
-    "recipient" : "Harold",
-    "reviewer" : "Suzanne",
-    "review" : "If Harold doesn't stop complaining about John...",
-    "date" : "01/25/20",
-    "fullReview" : "sample text button 8"
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 8"
   }, {
-    "recipient" : "Suzanne",
-    "reviewer" : "John",
-    "review" : "This department works wonderfully as a team and everyone gets along...",
-    "date" : "01/30/20",
-    "fullReview" : "sample text button 9"
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 9"
   }, {
-    "recipient" : "John",
-    "reviewer" : "Harold",
-    "review" : "Frankly, John is the worst person I've ever worked with...",
-    "date" : "01/23/20",
-    "fullReview" : "sample text button 10"
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 10"
   }, {
-    "recipient" : "Harold",
-    "reviewer" : "Suzanne",
-    "review" : "If Harold doesn't stop complaining about John...",
-    "date" : "01/25/20",
-    "fullReview" : "sample text button 11"
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 11"
   }, {
-    "recipient" : "Suzanne",
-    "reviewer" : "John",
-    "review" : "This department works wonderfully as a team and everyone gets along...",
-    "date" : "01/30/20",
-    "fullReview" : "sample text button 12"
-  } ]
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 12"
+  }, {
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 13"
+  }, {
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 14"
+  }, {
+    "recipient" : "Person",
+    "reviewer" : "Person",
+    "review" : "sample review",
+    "date" : "mm/dd/yy",
+    "fullReview" : "full review 15"
+  }]
