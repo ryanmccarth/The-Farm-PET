@@ -1,0 +1,27 @@
+.outer {
+    position:absolute;
+    top:60px;
+    left:100px;
+}
+
+.table1 {
+    position:absolute;
+    width:350px;
+    padding-top:10px;
+}
+
+.table2 {
+    position:relative;
+    left:400px;
+    width:300px;
+    padding-left:100px;
+    padding-top:10px;
+}
+
+.button {
+    text-align: center;
+}
+
+.alerts{
+    padding: 5%;
+}

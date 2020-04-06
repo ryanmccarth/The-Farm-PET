@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import Login from "./Login";
 import Read from "./ReadReviews";
-import Request from "./RequestReviews";
+import Request from "./Requests";
 import Write from "./WriteReviews";
 
 class Content extends Component {
