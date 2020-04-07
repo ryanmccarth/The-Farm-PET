@@ -21,9 +21,23 @@
 
 .TableSize{
   padding-left: 20%;
-  width: 80%;
+  width: 90%;
 }
 
 .TableStyle{
   table-layout: auto;
+}
+
+.FullReview{
+  text-align:center;
+  float: center;
+  width: 50%;
+  padding-top:50px;
+  padding-bottom: 50px;
+  border: 1px solid black;
+  background-color:white;
+}
+
+.inboxrow{
+  background-color: white;
 }

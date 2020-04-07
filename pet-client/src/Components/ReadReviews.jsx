@@ -1,101 +1,86 @@
-import React from "react";
-import "./temp/ReadContent.css";
-import data from "./temp/sample.json";
-import Button from "react-bootstrap/Button";
+import React from 'react';
+import './temp/ReadContent.css';
+import data from './temp/sample.json';
+import Table from 'react-bootstrap/Table';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class ReadReviews extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      fetch: false,
-      clicked: -1,
-      showReview: false
-    };
-    this.handlerClick = this.handlerClick.bind(this);
-  }
-  componentDidMount() {
-    this.setState({ fetch: true });
-  }
-
-  handlerClick(index) {
-    this.setState({ clicked: index, showReview: !this.state.showReview });
-  }
-
-  render() {
-    const Extract = props => {
-      if (props.fetch) {
-        if (!props.showReview) {
-          return (
-            <div>
-              <h1>Your Reviews:</h1>
-              <div class = "TableSize">
-                <table class = "TableStyle">
-                  <div class = "Scroll">
-                  <thead>
-                    <tr class="Label">
-                      <th>Recipient</th>
-                      <th>Reviewer</th>
-                      <th class = "Review">Review</th>
-                      <th>Date</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                    {data.map((info, index) => {
-                      return (
-                        <tbody>
-                        <tr>
-                          <td class="DataSpacing">{info.recipient}</td>
-                          <td class="DataSpacing">{info.reviewer}</td>
-                          <td class="DataSpacing">{info.review}</td>
-                          <td class="DataSpacing">{info.date}</td>
-                          <td class="DataSpacing">
-                            <Button variant = "primary"
-                              onClick={() => this.handlerClick(index)}
-                            >
-                              Open
-                            </Button>
-                          </td>
-                        </tr>
-                        </tbody>
-                      );
-                    })}
-                    </div>
-                </table>
-              </div>
-            </div>
-          );
+    constructor(props){
+        super(props);
+        this.state = {
+            fetch: false,
+            clicked: -1,
+            showReview: false
         }
-        return (
-          <div>
-            {data.map((info, index) => {
-              if (props.clicked === index) {
-                return (
-                  <div>
-                    <p>{info.fullReview}</p>
-                    <Button variant = "primary"
-                      onClick={() => this.handlerClick(-1)}
-                    >
-                      Return
-                    </Button>
-                  </div>
-                );
-              }
-              return null;
-            })}
-          </div>
+        this.handlerClick = this.handlerClick.bind(this);
+    }
+    componentDidMount(){
+        this.setState({fetch: true})
+    }
+
+    handlerClick(index){
+        this.setState({clicked: index, showReview: !this.state.showReview})
+    }
+
+    render(){
+
+        const buttonStyle = {
+            marginRight: '10px',
+            backgroundColor: '#2593F2',
+            border: '1px solid black',
+            boxShadow: '2px 2px blue',
+            borderRadius: '5px'
+        };
+        const Extract = (props) => {
+            if(props.fetch){
+                if(!props.showReview){
+                    return(
+                        <div>
+                            <Table striped="true" bordered="true" hover="true">
+                                <thead>
+                                    <tr>
+                                        <th dataField="reviewer">Reviewer</th>
+                                        <th dataField="recipient">Recipient</th>
+                                        <th dataField="fullreview">Review</th>
+                                        <th dataField="date">Date</th>
+                                    </tr>
+                                </thead>
+                                {data.map((info, index) => {                       
+                                    return<tr class="inboxrow" hover striped>
+                                        <td>{info.recipient}</td>
+                                        <td>{info.reviewer}</td>
+                                        <td>{info.fullreview.substr(0,130)}...</td>
+                                        <td>{info.date}</td>
+                                        <td>
+                                            <button style = {buttonStyle} onClick = {() => this.handlerClick(index)}>open</button>
+                                        </td>
+                                    </tr>
+                                })}
+                            </Table>
+                        </div>
+                    )
+                }
+                return(
+                    <div>
+                        {data.map((info, index) => {   
+                            if(props.clicked === index){
+                                return<div>
+                                    <p class="FullReview">{info.fullreview}</p>
+                                    <button style = {buttonStyle} onClick = {() => this.handlerClick(-1)}>return</button>
+                                </div>
+                            }
+                            return null
+                        })}
+                    </div>)
+            }
+            else{
+                return( <p>loading...</p>);
+            }
+        }
+        return(
+            <Extract clicked = {this.state.clicked} fetch = {this.state.fetch} showReview = {this.state.showReview} ></Extract>
         );
-      } else {
-        return <p>loading...</p>;
-      }
-    };
-    return (
-      <Extract
-        clicked={this.state.clicked}
-        fetch={this.state.fetch}
-        showReview={this.state.showReview}
-      ></Extract>
-    );
-  }
+    }
 }
 
 export default ReadReviews;
