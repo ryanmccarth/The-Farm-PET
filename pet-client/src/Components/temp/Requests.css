@@ -13,12 +13,24 @@
 .table2 {
     position:relative;
     left:400px;
+    top: 55px;
     width:300px;
     padding-left:100px;
-    padding-top:10px;
+}
+
+.table1Shell{
+    height:500px;
+   
+}
+
+.table2Shell{
+    height: 450px;
+    overflow-y:auto;
 }
 
 .button {
+    position:relative;
+    top: 55px;
     text-align: center;
 }
 
