@@ -15,9 +15,9 @@ services:
       - '3000:3000'
   # separate container for mysql db
   db:
-    image: mysql:5.7
+    build: pet-db
     environment:
-      MYSQL_DB: 'db'
+      MYSQL_DATABASE: 'pet'
       MYSQL_USER: 'bessy'
       MYSQL_PASSWORD: 'the-cow'
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
