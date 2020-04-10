@@ -10,6 +10,7 @@
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0",
     "react-bootstrap-table-next": "^4.0.0",
+    "react-bootstrap-table2-paginator": "^2.1.2",
     "react-bootstrap-table2-toolkit": "^2.1.2",
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0"
