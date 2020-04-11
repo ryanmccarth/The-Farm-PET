@@ -1,16 +1,27 @@
 import React from 'react';
 import './temp/ReadContent.css';
 import data from './temp/sample.json';
-import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+import BootstrapTable from 'react-bootstrap-table-next';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
 class ReadReviews extends React.Component {
     constructor(props){
         super(props);
+
+        const columns = [   //Declare column labels and styling
+            {dataField: 'reviewer', text: 'Reviewers', headerStyle: {width: '15%', backgroundColor: '#eee', color: '#000'}},
+            {dataField: 'recipient', text: 'Recipients', headerStyle: {width: '15%', backgroundColor: '#eee', color: '#000'}, searchable: false},
+            {dataField: 'fullreview', text: 'Reviews', headerStyle: {width: '45%', backgroundColor: '#eee', color: '#000'}, searchable: false},
+            {dataField: 'date', text: 'Date', headerStyle: {width: '10%', backgroundColor: '#eee', color: '#000'}, searchable: false}
+        ]
+
         this.state = {
             fetch: false,
             clicked: -1,
-            showReview: false
+            showReview: false,
+            columns
         }
         this.handlerClick = this.handlerClick.bind(this);
     }
@@ -21,52 +32,54 @@ class ReadReviews extends React.Component {
     handlerClick(index){
         this.setState({clicked: index, showReview: !this.state.showReview})
     }
-
     render(){
-
-        const buttonStyle = {
-            marginRight: '10px',
-            backgroundColor: '#2593F2',
-            border: '1px solid black',
-            boxShadow: '2px 2px blue',
-            borderRadius: '5px'
+        const rowEvents = { //do this on rowClick
+            onClick: (e, row, rowIndex) => {
+                this.handlerClick(rowIndex)
+            }
         };
+
+        const { SearchBar, ClearSearchButton } = Search;
+
         const Extract = (props) => {
-            if(props.fetch){
-                if(!props.showReview){
+            if(props.fetch){    //ensure React is rendering correctly
+                if(!props.showReview){  //detect whether a full review should be showing or not
                     return(
                         <div>
-                            <Table striped="true" bordered="true" hover="true">
-                                <thead>
-                                    <tr>
-                                        <th dataField="reviewer">Reviewer</th>
-                                        <th dataField="recipient">Recipient</th>
-                                        <th dataField="fullreview">Review</th>
-                                        <th dataField="date">Date</th>
-                                    </tr>
-                                </thead>
-                                {data.map((info, index) => {                       
-                                    return<tr class="inboxrow" hover striped>
-                                        <td>{info.recipient}</td>
-                                        <td>{info.reviewer}</td>
-                                        <td>{info.fullreview.substr(0,130)}...</td>
-                                        <td>{info.date}</td>
-                                        <td>
-                                            <button style = {buttonStyle} onClick = {() => this.handlerClick(index)}>open</button>
-                                        </td>
-                                    </tr>
-                                })}
-                            </Table>
+                            <h4>Your Reviews</h4>
+                            <ToolkitProvider    //provides search functionality
+                                keyField = 'reviewer'
+                                data = {data}
+                                columns = {this.state.columns}
+                                search
+                            >{ props => (
+                                <div>
+                                    <SearchBar {...props.searchProps} placeholder = "Search Reviewer..."/>
+                                    <ClearSearchButton { ...props.searchProps } />
+                                    <hr/>
+                                    <div class = 'Scroll'>
+                                        <BootstrapTable {...props.baseProps}
+                                            striped
+                                            hover
+                                            rowEvents = {rowEvents}
+                                            keyField = 'reviewer'
+                                            data = {data}
+                                            columns = {this.state.columns}
+                                        ></BootstrapTable>
+                                    </div>
+                                </div>
+                            )
+                            }</ToolkitProvider>
                         </div>
                     )
                 }
                 return(
                     <div>
                         {data.map((info, index) => {   
-                            if(props.clicked === index){
+                            if(props.clicked === index){    //only want to show the review that was clicked
                                 return<div>
                                     <p class="FullReview">{info.fullreview}</p>
-                                    <button style = {buttonStyle} onClick = {() => this.handlerClick(-1)}>return</button>
+                                    <Button variant = "primary" onClick = {() => this.handlerClick(-1)}>Return</Button>
                                 </div>
                             }
                             return null
