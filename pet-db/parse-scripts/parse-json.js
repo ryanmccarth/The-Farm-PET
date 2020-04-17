@@ -38,7 +38,7 @@ json_files.forEach((inputfile) => {
     if (typeof current.managerId == "undefined") {
       // Create query without managerId field
       codetoappend = codetoappend.concat(
-        `INSERT INTO users (userId, firstName, lastName, email, password, companyId, startDate) VALUES (${current.employeeId}, '${current.firstName}', '${current.lastName}', '${current.email}', '${current.password}', ${current.companyId}, '${current.startDate}');\n    `
+        `INSERT INTO users (companyUserId, firstName, lastName, email, password, companyId, startDate) VALUES (${current.employeeId}, '${current.firstName}', '${current.lastName}', '${current.email}', '${current.password}', ${current.companyId}, '${current.startDate}');\n    `
       );
     } else {
       // Create query

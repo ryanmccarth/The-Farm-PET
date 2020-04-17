@@ -4,7 +4,8 @@ CREATE TABLE companies (
 );
 
 CREATE TABLE users (
-    userId INT PRIMARY KEY,
+    userId INT AUTO_INCREMENT PRIMARY KEY,
+    companyUserId INT,
     firstName VARCHAR(255),
     lastName VARCHAR(255),
     email VARCHAR(255),
