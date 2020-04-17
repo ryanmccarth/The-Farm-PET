@@ -8,7 +8,7 @@ class PetDB {
 
     async connect() {
         while (!this.connected) {
-            var connection = mysql.createConnection({
+            const connection = mysql.createConnection({
                 host     : "db",
                 user     : "bessy",
                 password : "the-cow",
@@ -16,7 +16,7 @@ class PetDB {
             });
 
             console.log("Trying to connect to database...");
-            var _this = this;
+            const _this = this;
             connection.connect(function(err) {
                 if (!err) {
                     console.log("Successfully connected to database");
@@ -24,6 +24,8 @@ class PetDB {
                     _this.c = connection;
                 }
             });
+
+            // wait a few seconds before trying to connect again
             await new Promise((resolve) => {setTimeout(resolve, 3000);});
         }
     }
