@@ -19,26 +19,10 @@ Contains everything for a user to request reviews. Specifically, under this comp
 class Requests extends Component {
   constructor(props){
     super(props);
-  }
+    this.getEmployees();
+    }
     state = {
-      employees1: [
-        {name: 'Oscar Gibson'},
-        {name: 'Aaron Wright'},
-        {name: 'Trifon Trifonov'},
-        {name: 'Zachary Williams'},
-        {name: 'Stephan Lensky'},
-        {name: 'Ryan McCarthy'},
-        {name: 'Alden Burgess'},
-        {name: 'Rishikumar Jambunathan'},
-        {name: 'Todd Dvorsky'},
-        {name: 'Evan Besser'},
-        {name: "Joe Shmoe"},
-        {name: "John Doe"},
-        {name: "Jane Doe"},
-        {name: "John Smith"},
-        {name: "Test Name"},
-        
-      ],
+      employees1: [],
 
       employees2: [],
       columns1: [
@@ -53,6 +37,23 @@ class Requests extends Component {
         failedMessageVisible: false,
         selected: [],
 
+    }
+
+    //function that initializes list of employees
+    async getEmployees(){
+      let res = await fetch('/api/users', {
+        method: 'GET',
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+      });
+      let employees = await res.json();
+
+      //wait for the Promise to resolve first
+      while(!Array.isArray(employees));
+      //then initialize the table
+      this.setState({employees1: employees});
     }
 
     //What happens when you click the submit button

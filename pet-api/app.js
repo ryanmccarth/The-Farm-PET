@@ -6,7 +6,11 @@ var logger = require('morgan');
 var jsonErrorHandler = require('express-json-error-handler');
 
 var authRouter = require('./routes/auth');
+<<<<<<< Updated upstream
 var requestsRouter = require('./routes/requests');
+=======
+var usersRouter = require('./routes/users');
+>>>>>>> Stashed changes
 
 var app = express();
 
@@ -21,7 +25,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth', authRouter);
+<<<<<<< Updated upstream
 app.use('/api/requests', authRouter);
+=======
+app.use('/api/users', usersRouter);
+>>>>>>> Stashed changes
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
