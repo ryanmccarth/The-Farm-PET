@@ -13,7 +13,8 @@ class ReadReviews extends React.Component {
         const columns = [   //Declare column labels and styling
             {dataField: 'reviewer', text: 'Reviewers', headerStyle: {width: '15%', backgroundColor: '#eee', color: '#000'}},
             {dataField: 'recipient', text: 'Recipients', headerStyle: {width: '15%', backgroundColor: '#eee', color: '#000'}, searchable: false},
-            {dataField: 'fullreview', text: 'Reviews', headerStyle: {width: '45%', backgroundColor: '#eee', color: '#000'}, searchable: false},
+            {dataField: 'fullreview', text: 'Reviews', formatter: (cell, obj) => {return(cell.substr(0,80))}, //formatter allows for truncation
+            headerStyle: {width: '45%', backgroundColor: '#eee', color: '#000'}, searchable: false},
             {dataField: 'date', text: 'Date', headerStyle: {width: '10%', backgroundColor: '#eee', color: '#000'}, searchable: false}
         ]
 
@@ -25,17 +26,17 @@ class ReadReviews extends React.Component {
         }
         this.handlerClick = this.handlerClick.bind(this);
     }
-    componentDidMount(){
+    componentDidMount(){    //Adding this fixed a double-rendering issue, where a previous component state would be rendered.
         this.setState({fetch: true})
     }
 
-    handlerClick(index){
-        this.setState({clicked: index, showReview: !this.state.showReview})
+    handlerClick(row){
+        this.setState({clicked: row, showReview: !this.state.showReview})
     }
     render(){
         const rowEvents = { //do this on rowClick
             onClick: (e, row, rowIndex) => {
-                this.handlerClick(rowIndex)
+                this.handlerClick(row)
             }
         };
 
@@ -46,7 +47,9 @@ class ReadReviews extends React.Component {
                 if(!props.showReview){  //detect whether a full review should be showing or not
                     return(
                         <div>
-                            <h4>Your Reviews</h4>
+                            <div class = 'SearchbarSpacing'>
+                                <h4>Your Reviews</h4>
+                            </div>
                             <ToolkitProvider    //provides search functionality
                                 keyField = 'reviewer'
                                 data = {data}
@@ -54,10 +57,12 @@ class ReadReviews extends React.Component {
                                 search
                             >{ props => (
                                 <div>
-                                    <SearchBar {...props.searchProps} placeholder = "Search Reviewer..."/>
-                                    <ClearSearchButton { ...props.searchProps } />
+                                    <div class = 'SearchbarSpacing'>
+                                        <SearchBar {...props.searchProps} placeholder = "Search Reviewer..."/>
+                                        <ClearSearchButton { ...props.searchProps } />
+                                    </div>
                                     <hr/>
-                                    <div class = 'Scroll'>
+                                    <div class = 'TableSize'>
                                         <BootstrapTable {...props.baseProps}
                                             striped
                                             hover
@@ -75,15 +80,11 @@ class ReadReviews extends React.Component {
                 }
                 return(
                     <div>
-                        {data.map((info, index) => {   
-                            if(props.clicked === index){    //only want to show the review that was clicked
-                                return<div>
-                                    <p class="FullReview">{info.fullreview}</p>
-                                    <Button variant = "primary" onClick = {() => this.handlerClick(-1)}>Return</Button>
-                                </div>
-                            }
-                            return null
-                        })}
+                        <p class = "FullReview">
+                            {props.clicked.fullreview}
+                            <hr />
+                            <Button variant = "primary" onClick = {() => this.handlerClick(-1)}>Return</Button>
+                        </p>
                     </div>)
             }
             else{
