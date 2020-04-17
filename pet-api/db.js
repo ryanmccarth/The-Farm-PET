@@ -38,8 +38,11 @@ class PetDB {
         return new Promise((resolve) => {
             c.query("SELECT * FROM `pet`.`users` WHERE `email` = ?", [email], function (error, results, fields) {
                 if (error) throw error;
+
+                // select queries always return an array of results, but we can assume emails are unique and just return the first element
                 if (results.length) resolve(results[0]);
-                resolve(null)
+                // if the query didn't return anything, then the user doesn't exist and we return null
+                else resolve(null);
             });
         });
     }
