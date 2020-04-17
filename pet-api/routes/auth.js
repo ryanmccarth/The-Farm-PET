@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var bcrypt = require('bcrypt');
 var db = require('../db');
 
 /* handle login request, returning an auth token if successful */
@@ -17,6 +18,7 @@ router.post('/', async function(req, res, next) {
 		return;
 	}
 
+	// if (bcrypt.compareSync(req.body.password, user.password)) {
 	if (req.body.password === user.password) {
 		res.json({"token": "xxxxxxxxxx"});
 	} else {
