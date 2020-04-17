@@ -38,7 +38,7 @@ class PetDB {
         if (!this.connected) return;
         const c = this.c
         return new Promise((resolve) => {
-            c.query("SELECT * FROM `pet`.`users` WHERE `email` = ?", [email], function (error, results, fields) {
+            c.query("SELECT * FROM `users` WHERE `email` = ?", [email], function (error, results, fields) {
                 if (error) throw error;
 
                 // select queries always return an array of results, but we can assume emails are unique and just return the first element
