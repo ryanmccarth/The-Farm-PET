@@ -1,5 +1,5 @@
 CREATE TABLE companies (
-    companyId int PRIMARY KEY,
+    companyId int AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255)
 );
 
@@ -18,7 +18,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE reviews (
-    reviewId INT PRIMARY KEY,
+    reviewId INT AUTO_INCREMENT PRIMARY KEY,
     writtenBy INT,
     writtenFor INT,
     reviewText TEXT,
@@ -29,7 +29,7 @@ CREATE TABLE reviews (
 );
 
 CREATE TABLE requests (
-    requestId INT PRIMARY KEY,
+    requestId INT AUTO_INCREMENT PRIMARY KEY,
     requestedBy INT,
     requestedFor INT,
     created DATETIME,
