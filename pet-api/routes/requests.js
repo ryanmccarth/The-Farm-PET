@@ -32,3 +32,5 @@ router.get('/:userId', async function(req, res, next) {
         {name: "Test Name", userId: 14}
     ])
 });
+
+module.exports = router;
