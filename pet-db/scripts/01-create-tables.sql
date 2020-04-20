@@ -1,5 +1,5 @@
 CREATE TABLE companies (
-    companyId int AUTO_INCREMENT PRIMARY KEY,
+    companyId int PRIMARY KEY,
     name VARCHAR(255)
 );
 
