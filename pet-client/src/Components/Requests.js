@@ -22,9 +22,16 @@ class Requests extends Component {
     this.getEmployees();
     }
     state = {
+
+      //left table
       employees1: [],
 
+      //right table
       employees2: [],
+
+      //selected list, so that we can uncheck the boxes upon submission
+      selected: [],
+
       columns1: [
         {dataField: 'name',text: 'Employee Name',headerStyle: { width: '100%', backgroundColor: '#eee', color: '#000'},}
         ],
@@ -35,8 +42,6 @@ class Requests extends Component {
       
         successMessageVisible: false,
         failedMessageVisible: false,
-        selected: [],
-
     }
 
     //function that initializes list of employees
@@ -53,14 +58,22 @@ class Requests extends Component {
       //wait for the Promise to resolve first
       while(!Array.isArray(employees));
       //then initialize the table
-      this.setState({employees1: employees});
+      this.setState({employees1: employees, employeesOG: employees.slice(0)});
     }
 
     //What happens when you click the submit button
-    submit(){
-      if(this.state.employees2.length != 0){
-        this.setState({successMessageVisible: true, failedMessageVisible: false});
-        this.removeAllEmployees();
+    async submit(){
+      if(this.state.employees2.length !== 0){
+        let res = await fetch('/api/requests', {
+          method: 'POST',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({employeesList: this.state.employees2}),
+        });
+      
+        this.setState({employees2: [], selected: [], successMessageVisible: true, failedMessageVisible: false});
       }
       else{
         this.setState({successMessageVisible: false, failedMessageVisible: true});
@@ -69,9 +82,11 @@ class Requests extends Component {
 
     //helper function for adding employees to second list
     addEmployee(employee){
-      var temp = this.state.employees2;
+      var temp = this.state.employees2.slice(0);
+      var temp2 = this.state.selected.slice(0);
       temp.push(employee);
-      this.setState({employees2: temp});
+      temp2.push(employee.id);
+      this.setState({employees2: temp, selected: temp2});
       if(this.state.successMessageVisible === true || this.state.failedMessageVisible === true){
         this.removeMessages();
       }
@@ -79,24 +94,64 @@ class Requests extends Component {
 
     //helper function for removing employees from second list
     removeEmployee(employee){
-      var temp = this.state.employees2;
+      var temp = this.state.employees2.slice(0);
         for(var i = 0; i<temp.length; i++){
-          if(temp[i].name===employee.name){
+          if(temp[i].id===employee.id){
             temp.splice(i, 1);
           }
         }
-        this.setState({employees2: temp});
+
+        var temp2 = this.state.selected.slice(0);
+        for(var j = 0; j<temp2.length; j++){
+          if(temp2[j]===employee.id){
+            temp2.splice(j, 1);
+          }
+        }
+
+        this.setState({employees2: temp, selected: temp2});
     }
-    //helper function for Select All button
-    addAllEmployees(){
-      var temp = this.state.employees1.slice(0);
-      var temp2 = this.state.employees1.map(function(employee){return employee.name});
+
+    addAllEmployees(employees){
+      var temp = this.state.employees2.slice(0);
+      var temp2 = this.state.selected.slice(0);
+      var i = 0;
+      while(i<employees.length){
+        temp.push(employees[i]);
+        temp2.push(employees[i].id);
+        i++;
+      }
       this.setState({employees2: temp, selected: temp2});
+      if(this.state.successMessageVisible === true || this.state.failedMessageVisible === true){
+        this.removeMessages();
+      }
     }
 
     //helper function for unchecking Select All button
-    removeAllEmployees(){
-      this.setState({employees2: [], selected: []});
+    removeAllFromPage(employees){
+      var temp = this.state.employees2.slice(0);
+      var temp2 = this.state.selected.slice(0);
+      temp = temp.filter(function(employee){
+        var i = 0;
+        while(i < employees.length){
+          if(employees[i].id === employee.id){
+            return false;
+          }
+          i++;
+        }
+        return true;
+      });
+
+      temp2 = temp2.filter(function(employee){
+        var j = 0;
+        while(j < employees.length){
+          if(employees[j].id === employee){
+            return false;
+          }
+          j++;
+        }
+        return true;
+      });
+      this.setState({employees2: temp, selected: temp2});
     }
 
     removeMessages(){
@@ -119,24 +174,18 @@ class Requests extends Component {
 
         onSelect: (row, isSelect, rowIndex, e) => {
           if(isSelect){
-            var temp = this.state.selected.slice(0);
-            temp.push(row.name);
-            this.setState({selected: temp});
             this.addEmployee(row);
         }
           else{
-            var temp = this.state.selected.slice(0);
-            temp = temp.filter(function(employee){return employee!=row.name});
-            this.setState({selected: temp});
             this.removeEmployee(row);
         }},
 
         onSelectAll: (isSelect, rows, e) => {
           if(isSelect){
-            this.addAllEmployees();
+            this.addAllEmployees(rows);
           }
           else{
-            this.removeAllEmployees();
+            this.removeAllFromPage(rows);
           }
         }
       };
@@ -160,7 +209,7 @@ class Requests extends Component {
             <div className='table1Shell'>  
             <BootstrapTable  {...props.baseProps}
             hover
-            keyField='name' 
+            keyField='id' 
             data={ this.state.employees1 } 
             columns={ this.state.columns1 }
             selectRow={ selectRow }
@@ -174,7 +223,7 @@ class Requests extends Component {
               <div className='table2Shell'>
             <BootstrapTable 
             hover
-            keyField='name' 
+            keyField='id' 
             data={ this.state.employees2 } 
             columns={ this.state.columns2 }
             rowStyle={rowStyle}

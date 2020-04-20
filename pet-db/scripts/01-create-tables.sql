@@ -18,7 +18,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE reviews (
-    reviewId INT PRIMARY KEY,
+    reviewId INT AUTO_INCREMENT PRIMARY KEY,
     writtenBy INT,
     writtenFor INT,
     reviewText TEXT,
@@ -29,10 +29,10 @@ CREATE TABLE reviews (
 );
 
 CREATE TABLE requests (
-    requestId INT PRIMARY KEY,
+    requestId INT AUTO_INCREMENT PRIMARY KEY,
     requestedBy INT,
     requestedFor INT,
-    created DATETIME,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (requestedBy) REFERENCES users(userId),
     FOREIGN KEY (requestedFor) REFERENCES users(userId)
 );

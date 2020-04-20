@@ -48,6 +48,21 @@ class PetDB {
             });
         });
     }
+
+    sendRequests(employeesList) {
+        const listLength = employeesList.length;
+        const c = this.c;
+        var i = 0;
+        while(i < listLength){
+            var sql = "INSERT INTO requests (requestedBy, requestedFor) SELECT 1, ?" +
+            " WHERE NOT EXISTS (SELECT * FROM requests WHERE requestedBy=1 AND requestedFor=?)";
+            c.query(sql, [employeesList[i].id, employeesList[i].id], function(error, results, fields){
+                if (error) throw error;
+            });
+            i++;
+        }
+
+    }
 }
 
 module.exports = new PetDB();
