@@ -61,7 +61,18 @@ class PetDB {
             });
             i++;
         }
+    }
 
+    getNames() {
+        if (!this.connected) return;
+        const c = this.c
+        return new Promise((resolve) => {
+            c.query("SELECT CONCAT(firstName,' ',lastName) AS name, userID AS id FROM users ORDER BY name", function (error, results) {
+                if (error) { throw error; }
+                
+                resolve(results);                
+            });
+        });
     }
 }
 
