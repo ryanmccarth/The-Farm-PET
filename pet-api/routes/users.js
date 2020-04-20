@@ -1,24 +1,13 @@
 var express = require('express');
 var router = express.Router();
+var db = require('../db');
 
 //return the list of Employees
-router.get('/', function(req, res){
-    var employees = [
-        {name: "Oscar Gibson"},
-        {name: 'Aaron Wright'},
-        {name: 'Trifon Trifonov'},
-        {name: 'Zachary Williams'},
-        {name: 'Stephan Lensky'},
-        {name: 'Ryan McCarthy'},
-        {name: 'Alden Burgess'},
-        {name: 'Rishikumar Jambunathan'},
-        {name: 'Todd Dvorsky'},
-        {name: 'Evan Besser'},
-        {name: "Joe Shmoe"},
-        {name: "John Doe"},
-    ];
+router.get('/',  async function(req, res){
+    if (!db.isConnected()) { res.status(500); return; }
+    
+    var employees = await db.getNames();
     res.json(employees);
-
 });
 
 module.exports = router;
