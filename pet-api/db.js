@@ -64,10 +64,10 @@ class PetDB {
 
         // TODO: should we check if users exist before inserting?? if not, disregard
         return new Promise((resolve) => {
-            c.query(`INSERT INTO reviews (writtenBy, writtenFor, reviewText, lastUpdated, isDraft) VALUES (${reviewerId}, ${revieweeId}, '${text}', '${datetime}', ${draftStatus})`, function (error, results, fields) {
+            c.query(`INSERT INTO reviews (writtenBy, writtenFor, reviewText, lastUpdated, isDraft) VALUES (${mysql.escape(reviewerId)}, ${mysql.escape(revieweeId)}, '${mysql.escape(text)}', '${mysql.escape(datetime)}', ${mysql.escape(draftStatus)})`, function (error, results, fields) {
                 if(error) throw error;
                 
-                resolve(null);
+                resolve(true);
             });
         });
     }
@@ -85,10 +85,10 @@ class PetDB {
         const draftStatus = isDraft ? "TRUE" : "FALSE";
         
         return new Promise((resolve) => {
-            c.query(`UPDATE reviews SET reviewText = '${text}', lastUpdated = '${datetime}', isDraft = ${draftStatus} WHERE reviewId = ${reviewId}`, function(error, results, fields){
+            c.query(`UPDATE reviews SET reviewText = '${mysql.escape(text)}', lastUpdated = '${mysql.escape(datetime)}', isDraft = ${mysql.escape(draftStatus)} WHERE reviewId = ${mysql.escape(reviewId)}`, function(error, results, fields){
                 if(error) throw error;
 
-                resolve(null);
+                resolve(true);
             });
         });
     }
