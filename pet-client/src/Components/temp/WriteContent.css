@@ -1,6 +1,7 @@
 #write-container {
-    max-width: 550px;
+    max-width: 600px;
     margin-top: 32px;
+    text-align: center;
 }
 
 #write-review-form {
@@ -15,4 +16,14 @@
 #write-btn-submit {
     display: table-cell;
     width: 100%;
+}
+
+#alert-container-top {
+    text-align: left;
+}
+
+#alert-container-bottom {
+    text-align: left;
+    margin-top: 32px;
+    margin-bottom: 32px;
 }
