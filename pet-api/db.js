@@ -88,7 +88,7 @@ class PetDB {
             c.query(`UPDATE reviews SET reviewText = '${mysql.escape(text)}', lastUpdated = '${mysql.escape(datetime)}', isDraft = ${mysql.escape(draftStatus)} WHERE reviewId = ${mysql.escape(reviewId)}`, function(error, results, fields){
                 if(error) throw error;
 
-                resolve(null);
+                resolve(true);
             });
         });
     }
