@@ -1,26 +1,25 @@
 .outer {
     position:absolute;
-    top:60px;
-    left:100px;
+    top:100px;
+    left:350px;
 }
 
 .table1 {
     position:absolute;
-    width:350px;
+    width:450px;
     padding-top:10px;
 }
 
 .table2 {
     position:relative;
-    left:400px;
-    top: 55px;
-    width:300px;
+    left:600px;
+    top: 56px;
+    width:325px;
     padding-left:100px;
 }
 
 .table1Shell{
     height:500px;
-   
 }
 
 .table2Shell{
