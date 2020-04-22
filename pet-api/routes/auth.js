@@ -10,7 +10,7 @@ router.post('/', async function(req, res, next) {
 		res.status(400).json({message: "login request must contain username and password"});
 		return;
 	}
-	console.log(req.body);
+	// console.log(req.body);
 
 	var user = await db.getUserByEmail(req.body.username);
 	if (user === null) {
@@ -20,7 +20,8 @@ router.post('/', async function(req, res, next) {
 
 	// if (bcrypt.compareSync(req.body.password, user.password)) {
 	if (req.body.password === user.password) {
-		res.json({"token": "xxxxxxxxxx"});
+		delete user.password;
+		res.json({"token": "xxxxxxxxxx", "session": user});
 	} else {
 		res.status(401).json({message: "invalid email or password"});
 	}
