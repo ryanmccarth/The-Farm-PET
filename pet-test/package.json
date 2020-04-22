@@ -1,0 +1,11 @@
+{
+  "name": "pet-test",
+  "version": "1.0.0",
+  "description": "Container devoted to testing",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^25.4.0"
+  }
+}

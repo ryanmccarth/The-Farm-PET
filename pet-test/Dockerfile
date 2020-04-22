@@ -6,4 +6,5 @@ WORKDIR /home/node/app
 COPY package*.json ./
 RUN npm install
 
-CMD ["node", "jest"]
+COPY . .
+CMD npm run test
