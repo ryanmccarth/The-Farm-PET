@@ -49,25 +49,27 @@ class PetDB {
         });
     }
 
-    sendRequests(employeesList) {
+    sendRequests(employeesList, id) {
         const listLength = employeesList.length;
         const c = this.c;
         var i = 0;
         while(i < listLength){
-            var sql = "INSERT INTO requests (requestedBy, requestedFor) SELECT 1, ?" +
-            " WHERE NOT EXISTS (SELECT * FROM requests WHERE requestedBy=1 AND requestedFor=?)";
-            c.query(sql, [employeesList[i].id, employeesList[i].id], function(error, results, fields){
+            var sql = "INSERT INTO requests (requestedBy, requestedFor) SELECT ?, ?" +
+            " WHERE NOT EXISTS (SELECT * FROM requests WHERE requestedBy=? AND requestedFor=?)";
+            c.query(sql, [id, employeesList[i].id, id, employeesList[i].id], function(error, results, fields){
                 if (error) throw error;
             });
             i++;
         }
     }
 
-    getNames() {
+    getNames(user, company) {
         if (!this.connected) return;
         const c = this.c
+        var sql = "SELECT CONCAT(firstName,' ',lastName) AS name, userID AS id " +
+        "FROM users WHERE userID <> ? AND companyID = ? ORDER BY name";
         return new Promise((resolve) => {
-            c.query("SELECT CONCAT(firstName,' ',lastName) AS name, userID AS id FROM users ORDER BY name", function (error, results) {
+            c.query(sql, [user, company], function (error, results) {
                 if (error) { throw error; }
                 
                 resolve(results);                

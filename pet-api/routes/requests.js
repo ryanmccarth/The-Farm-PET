@@ -6,7 +6,8 @@ var db = require('../db');
 router.post('/', async function(req, res, next) {
     if (!db.isConnected()) { res.status(500); return; }
     else{
-        db.sendRequests(req.body.employeesList);
+        console.log(req.body.userid);
+        db.sendRequests(req.body.employeesList, req.body.userid);
         res.json(true);
     }
 });

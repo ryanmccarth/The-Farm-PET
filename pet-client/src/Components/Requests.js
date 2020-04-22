@@ -6,6 +6,7 @@ import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import './temp/Requests.css';
+import session from "../session";
 
 
 /*
@@ -46,7 +47,8 @@ class Requests extends Component {
 
     //function that initializes list of employees
     async getEmployees(){
-      let res = await fetch('/api/users', {
+      var url = 'api/users/' + session.userId + "/" + session.companyId;
+      let res = await fetch(url, {
         method: 'GET',
         headers: {
           Accept: "application/json",
@@ -70,7 +72,7 @@ class Requests extends Component {
             Accept: "application/json",
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({employeesList: this.state.employees2}),
+          body: JSON.stringify({employeesList: this.state.employees2, userid: session.userId}),
         });
       
         this.setState({employees2: [], selected: [], successMessageVisible: true, failedMessageVisible: false});
