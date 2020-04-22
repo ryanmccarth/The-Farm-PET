@@ -1,16 +1,20 @@
+const fetch = require("node-fetch");
+
 test("Login correct credentials", async () => {
-  let res = await fetch("http://api:3001/api/auth", {
+  jest.setTimeout(30000);
+  await new Promise((resolve) => {
+    setTimeout(resolve, 10000);
+  });
+  let res = await fetch("api:3001/api/auth", {
     method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       username: "Reed_Fischer@bluellamaconsultingco.com",
       password: "fischerre",
     }),
   });
-  expect(res).toContain("token");
-  let token = res.token;
+  console.log(res + "\n");
+  let resJson = res.json();
+  let token = resJson.token;
   expect(token).toBeTruthy();
 });
