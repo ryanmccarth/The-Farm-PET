@@ -6,6 +6,8 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
+import session from "../session";
+
 class Login extends Component {
   state = {};
 
@@ -13,6 +15,7 @@ class Login extends Component {
     e.preventDefault();
     const username = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const rememberMe = document.getElementById("rememberMe").checked;
 
     const res = await fetch("/api/auth", {
       method: "POST",
@@ -35,6 +38,13 @@ class Login extends Component {
       alertVariant = "warning";
     } else {
       const body = await res.json();
+      if (rememberMe) {
+        session.save(body.session, undefined); // no expiration
+      } else {
+        const exp = new Date();
+        exp.setDate(exp.getDate() + 1); // expire in 24 hours
+        session.save(body.session, exp);
+      }
       message = "Success! Your token is " + body.token + ".";
       alertVariant = "success";
     }
@@ -61,7 +71,7 @@ class Login extends Component {
               <Form.Label>Password</Form.Label>
               <Form.Control type="password" placeholder="Password" />
             </Form.Group>
-            <Form.Group controlId="formBasicCheckbox">
+            <Form.Group controlId="rememberMe">
               <Form.Check type="checkbox" label="Remember me" />
             </Form.Group>
             <div id="login-result" />
