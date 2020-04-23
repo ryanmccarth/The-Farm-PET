@@ -1,8 +1,14 @@
 import React, { Component } from "react";
+import session from "../session";
 
 class NavBar extends Component {
   pageHandler(page) {
-    this.props.update(page);
+    this.props.updateContent(page);
+  }
+  sessionLogout() {
+    session.delete();
+    this.props.updateSession(session);
+    this.props.updateContent("login");
   }
 
   render() {
@@ -25,26 +31,10 @@ class NavBar extends Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li
-              className={
-                "nav-item" + (this.props.page === "login" && " active")
-              }
-            >
-              <a
-                className="nav-link"
-                href="#top"
-                onClick={() => this.pageHandler("login")}
-              >
-                Login
-                {this.props.page === "login" && (
-                  <span className="sr-only">(current)</span>
-                )}
-              </a>
-            </li>
-            <li
               className={"nav-item" + (this.props.page === "read" && " active")}
             >
               <a
-                className="nav-link"
+                className={"nav-link" + (!session.exists() ? " disabled" : "")}
                 href="#top"
                 onClick={() => this.pageHandler("read")}
               >
@@ -60,7 +50,7 @@ class NavBar extends Component {
               }
             >
               <a
-                className="nav-link"
+                className={"nav-link" + (!session.exists() ? " disabled" : "")}
                 href="#top"
                 onClick={() => this.pageHandler("request")}
               >
@@ -76,7 +66,7 @@ class NavBar extends Component {
               }
             >
               <a
-                className="nav-link"
+                className={"nav-link" + (!session.exists() ? " disabled" : "")}
                 href="#top"
                 onClick={() => this.pageHandler("write")}
               >
@@ -86,9 +76,15 @@ class NavBar extends Component {
                 )}
               </a>
             </li>
+          </ul>
+          <ul className="navbar-nav navbar-right">
             <li className="nav-item">
-              <a href="#top" className="nav-link disabled">
-                Dashboard
+              <a
+                className={"nav-link" + (!session.exists() ? " disabled" : "")}
+                href="top"
+                onClick={() => this.sessionLogout()}
+              >
+                Log Out
               </a>
             </li>
           </ul>

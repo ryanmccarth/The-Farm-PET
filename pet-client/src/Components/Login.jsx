@@ -9,8 +9,6 @@ import Button from "react-bootstrap/Button";
 import session from "../session";
 
 class Login extends Component {
-  state = {};
-
   async handleLogin(e) {
     e.preventDefault();
     const username = document.getElementById("email").value;
@@ -21,12 +19,12 @@ class Login extends Component {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         username: username,
-        password: password
-      })
+        password: password,
+      }),
     });
 
     let message, alertVariant;
@@ -47,6 +45,9 @@ class Login extends Component {
       }
       message = "Success! Your token is " + body.token + ".";
       alertVariant = "success";
+      this.props.updateSession(session);
+      this.props.updateContent("read");
+      return;
     }
 
     ReactDOM.render(
@@ -59,7 +60,7 @@ class Login extends Component {
     return (
       <Container className="login-container d-flex">
         <Container className="row justify-content-center align-self-center">
-          <Form id="login-form" onSubmit={this.handleLogin}>
+          <Form id="login-form" onSubmit={(e) => this.handleLogin(e)}>
             <h3>Sign in</h3>
 
             <Form.Group controlId="email">
