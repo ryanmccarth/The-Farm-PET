@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ConditionalTooltip from "./ConditionalTooltip";
 import session from "../session";
 
 class NavBar extends Component {
@@ -12,6 +13,7 @@ class NavBar extends Component {
   }
 
   render() {
+    const disabledButtonTooltip = "Log in to access this page";
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <span className="navbar-brand">PET</span>
@@ -33,59 +35,67 @@ class NavBar extends Component {
             <li
               className={"nav-item" + (this.props.page === "read" && " active")}
             >
-              <a
-                className={"nav-link" + (!session.exists() ? " disabled" : "")}
-                href="#top"
-                onClick={() => this.pageHandler("read")}
-              >
-                Read
-                {this.props.page === "read" && (
-                  <span className="sr-only">(current)</span>
-                )}
-              </a>
+              <ConditionalTooltip tooltip={disabledButtonTooltip} show={!session.exists()}>
+                <a
+                  className={"nav-link" + (!session.exists() ? " disabled" : "")}
+                  href="#top"
+                  onClick={() => this.pageHandler("read")}
+                >
+                  Read
+                  {this.props.page === "read" && (
+                    <span className="sr-only">(current)</span>
+                  )}
+                </a>
+              </ConditionalTooltip>
             </li>
             <li
               className={
                 "nav-item" + (this.props.page === "request" && " active")
               }
             >
-              <a
-                className={"nav-link" + (!session.exists() ? " disabled" : "")}
-                href="#top"
-                onClick={() => this.pageHandler("request")}
-              >
-                Request
-                {this.props.page === "request" && (
-                  <span className="sr-only">(current)</span>
-                )}
-              </a>
+              <ConditionalTooltip tooltip={disabledButtonTooltip} show={!session.exists()}>
+                <a
+                  className={"nav-link" + (!session.exists() ? " disabled" : "")}
+                  href="#top"
+                  onClick={() => this.pageHandler("request")}
+                >
+                  Request
+                  {this.props.page === "request" && (
+                    <span className="sr-only">(current)</span>
+                  )}
+                </a>
+              </ConditionalTooltip>
             </li>
             <li
               className={
                 "nav-item" + (this.props.page === "write" && " active")
               }
             >
-              <a
-                className={"nav-link" + (!session.exists() ? " disabled" : "")}
-                href="#top"
-                onClick={() => this.pageHandler("write")}
-              >
-                Write
-                {this.props.page === "write" && (
-                  <span className="sr-only">(current)</span>
-                )}
-              </a>
+              <ConditionalTooltip tooltip={disabledButtonTooltip} show={!session.exists()}>
+                <a
+                  className={"nav-link" + (!session.exists() ? " disabled" : "")}
+                  href="#top"
+                  onClick={() => this.pageHandler("write")}
+                >
+                  Write
+                  {this.props.page === "write" && (
+                    <span className="sr-only">(current)</span>
+                  )}
+                </a>
+              </ConditionalTooltip>
             </li>
           </ul>
           <ul className="navbar-nav navbar-right">
             <li className="nav-item">
-              <a
-                className={"nav-link" + (!session.exists() ? " disabled" : "")}
-                href="top"
-                onClick={() => this.sessionLogout()}
-              >
-                Log Out
-              </a>
+              <ConditionalTooltip tooltip={disabledButtonTooltip} show={!session.exists()}>
+                <a
+                  className={"nav-link" + (!session.exists() ? " disabled" : "")}
+                  href="top"
+                  onClick={() => this.sessionLogout()}
+                >
+                  Log Out
+                </a>
+              </ConditionalTooltip>
             </li>
           </ul>
         </div>
