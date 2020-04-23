@@ -1,11 +1,19 @@
 import React, { Component } from "react";
+import ConditionalTooltip from "./ConditionalTooltip";
+import session from "../session";
 
 class NavBar extends Component {
   pageHandler(page) {
-    this.props.update(page);
+    this.props.updateContent(page);
+  }
+  sessionLogout() {
+    session.delete();
+    this.props.updateSession(session);
+    this.props.updateContent("login");
   }
 
   render() {
+    const disabledButtonTooltip = "Log in to access this page";
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <span className="navbar-brand">PET</span>
@@ -25,71 +33,69 @@ class NavBar extends Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li
-              className={
-                "nav-item" + (this.props.page === "login" && " active")
-              }
-            >
-              <a
-                className="nav-link"
-                href="#top"
-                onClick={() => this.pageHandler("login")}
-              >
-                Login
-                {this.props.page === "login" && (
-                  <span className="sr-only">(current)</span>
-                )}
-              </a>
-            </li>
-            <li
               className={"nav-item" + (this.props.page === "read" && " active")}
             >
-              <a
-                className="nav-link"
-                href="#top"
-                onClick={() => this.pageHandler("read")}
-              >
-                Read
-                {this.props.page === "read" && (
-                  <span className="sr-only">(current)</span>
-                )}
-              </a>
+              <ConditionalTooltip tooltip={disabledButtonTooltip} show={!session.exists()}>
+                <a
+                  className={"nav-link" + (!session.exists() ? " disabled" : "")}
+                  href="#top"
+                  onClick={() => this.pageHandler("read")}
+                >
+                  Read
+                  {this.props.page === "read" && (
+                    <span className="sr-only">(current)</span>
+                  )}
+                </a>
+              </ConditionalTooltip>
             </li>
             <li
               className={
                 "nav-item" + (this.props.page === "request" && " active")
               }
             >
-              <a
-                className="nav-link"
-                href="#top"
-                onClick={() => this.pageHandler("request")}
-              >
-                Request
-                {this.props.page === "request" && (
-                  <span className="sr-only">(current)</span>
-                )}
-              </a>
+              <ConditionalTooltip tooltip={disabledButtonTooltip} show={!session.exists()}>
+                <a
+                  className={"nav-link" + (!session.exists() ? " disabled" : "")}
+                  href="#top"
+                  onClick={() => this.pageHandler("request")}
+                >
+                  Request
+                  {this.props.page === "request" && (
+                    <span className="sr-only">(current)</span>
+                  )}
+                </a>
+              </ConditionalTooltip>
             </li>
             <li
               className={
                 "nav-item" + (this.props.page === "write" && " active")
               }
             >
-              <a
-                className="nav-link"
-                href="#top"
-                onClick={() => this.pageHandler("write")}
-              >
-                Write
-                {this.props.page === "write" && (
-                  <span className="sr-only">(current)</span>
-                )}
-              </a>
+              <ConditionalTooltip tooltip={disabledButtonTooltip} show={!session.exists()}>
+                <a
+                  className={"nav-link" + (!session.exists() ? " disabled" : "")}
+                  href="#top"
+                  onClick={() => this.pageHandler("write")}
+                >
+                  Write
+                  {this.props.page === "write" && (
+                    <span className="sr-only">(current)</span>
+                  )}
+                </a>
+              </ConditionalTooltip>
             </li>
+          </ul>
+          <ul className="navbar-nav navbar-right">
             <li className="nav-item">
-              <a href="#top" className="nav-link disabled">
-                Dashboard
-              </a>
+              <ConditionalTooltip tooltip={disabledButtonTooltip} show={!session.exists()}>
+                <a
+                  className={"nav-link" + (!session.exists() ? " disabled" : "")}
+                  href="top"
+                  onClick={() => this.sessionLogout()}
+                >
+                  Log Out
+                </a>
+              </ConditionalTooltip>
             </li>
           </ul>
         </div>
