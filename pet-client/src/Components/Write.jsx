@@ -64,6 +64,25 @@ class Write extends Component {
     // we need to make a request to the API here to submit the review, then set either the "success" or "failure" state depending on the api response
     // for the failure case, we can change bottomAlertContent to be a more descriptive error depending on what went wrong with the api call
 
+    let _this = this;
+
+    const res = await fetch("/api/auth/writereview", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      
+      // function expects the following:
+      body: JSON.stringify({
+        reviewerId: _this.state.requester.userId,
+        revieweeId: _this.state.requester.userId,// TODO: CHANGE THIS WHEN COOKIES ARE IMPLEMENTED!!!!!!!!!
+        text: text,
+        datetime: "2020-04-22 11:11:11",         // TODO: CHANGE THIS TO ACTUAL DATE!!!!!
+        isDraft: false                           // TODO: change this to false when doing "save as draft" 
+      })
+    });
+
     // success
     this.setState({
       isWriting: false,
