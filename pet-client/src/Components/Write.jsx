@@ -5,12 +5,15 @@ import Alert from "react-bootstrap/Alert";
 import WriteRequesters from './WriteRequesters';
 import WriteReview from './WriteReview';
 
+import session from "../session";
+
 import './temp/WriteContent.css';
 
 class Write extends Component {
   state = {
     userId: 0,
-    isWriting: false
+    isWriting: false,
+    //editingDraft: false   // TODO used to keep track whether currently editing draft or writing new review
   };
 
   constructor(props) {
@@ -57,14 +60,18 @@ class Write extends Component {
     this.setState({isWriting: false, requester: undefined, showBottomAlert: false});
   }
 
-  async submitReview(text) {
+  async submitReview(text, isDraft) {
     console.log(`submitting ${text} for ${this.state.requester.name}`);
 
     // TODO
     // we need to make a request to the API here to submit the review, then set either the "success" or "failure" state depending on the api response
     // for the failure case, we can change bottomAlertContent to be a more descriptive error depending on what went wrong with the api call
 
-    let _this = this;
+    let _this = this;         // keep a reference to this instance of the object
+    //let date = new Date();    // get current date and time
+    
+    //let datestring = `${date.getFullYear()}-${("0"+(date.getMonth()+1)).slice(-2)}-${("0"+date.getDate()).slice(-2)} ${("0"+date.getHours()).slice(-2)}:${("0"+date.getMinutes()).slice(-2)}:${("0"+date.getSeconds()).slice(-2)}`;
+    let reviewId = (_this.state.review) ? _this.state.review.reviewId : -1;
 
     const res = await fetch("/api/auth/writereview", {
       method: "POST",
@@ -74,37 +81,47 @@ class Write extends Component {
       },
       
       // function expects the following:
+      // reviewId: int representing Id of current review (if editing one)
+      // requestId: represents selected request's Id
+      // reviewerId: int, revieweeId: int, text: String
+      // datetime: String in format "YYYY-MM-DD hh:mm:ss"
+      // isDraft: boolean
       body: JSON.stringify({
-        reviewerId: _this.state.requester.userId,
-        revieweeId: _this.state.requester.userId,// TODO: CHANGE THIS WHEN COOKIES ARE IMPLEMENTED!!!!!!!!!
+        reviewId: reviewId,                       // reviewId will be -1 if this isn't a previously saved draft
+        requestId: _this.state.request.requestId, // TODO: requestId should be taken from the selected request
+        reviewerId: session.userId,
+        revieweeId: _this.state.requester.userId, // these could be switched, logic is funky rn
         text: text,
-        datetime: "2020-04-22 11:11:11",         // TODO: CHANGE THIS TO ACTUAL DATE!!!!!
-        isDraft: false                           // TODO: change this to false when doing "save as draft" 
+        datetime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        isDraft: isDraft
+        //wasDraft: _this.state.editingDraft
+        // TODO: after the call, change the global request id
       })
     });
 
-    // success
-    this.setState({
-      isWriting: false,
-      showTopAlert: true,
-      showBottomAlert: false,
-      topAlertVariant: "success",
-      topAlertContent: `Review for ${this.state.requester.name} submitted successfully`
-    });
-    // refresh requesters
-    this.getRequesters();
-
-    // failure
-    // this.setState({
-    //   showTopAlert: false,
-    //   showBottomAlert: true,
-    //   bottomAlertVariant: "danger",
-    //   bottomAlertContent: `There was an error submitting your review. Please try again.`
-    // });
+    if (res.status === 200) {
+      this.setState({
+        isWriting: false,
+        showTopAlert: true,
+        showBottomAlert: false,
+        topAlertVariant: "success",
+        topAlertContent: `Review for ${this.state.requester.name} submitted successfully`
+      });
+      // refresh requesters
+      this.getRequesters();
+    } 
+    else {
+      this.setState({
+        showTopAlert: false,
+        showBottomAlert: true,
+        bottomAlertVariant: "danger",
+        bottomAlertContent: `There was an error submitting your review. Please try again.`
+      });
+    }
   }
 
   handleRequesterSelect(requester) {
-    this.setState({isWriting: true, requester: requester});
+    this.setState({isWriting: true, requester: requester}); // TODO: make it add request to global state
   }
 
   render() {

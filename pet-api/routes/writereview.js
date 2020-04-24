@@ -11,20 +11,26 @@ router.post('/', async function(req, res, next) {
         res.status(400).json({message: "write request must contain parameters for write or edit"});
         return;
     }
-
-    // think about NOT deleting a review if it's a draft!!
     
-    // Check if this is an input request for a new review
-    //if(req.body.reviewerId) {
+    var result; // do I need this?
 
-    var result = await db.insertReview(req.body.reviewerId, req.body.revieweeId, req.body.text, req.body.datetime, req.body.isDraft);
-    
-    // DELETE THE REQUEST!!
-    
-    // if not, execute it as an update request
-    // ENABLE LATER, MERGE WITH ABOVE CODE. check whether review exists and decide by that
-    //var result = await db.editReview(req.body.reviewId, req.body.text, req.body.datetime, req.body.isDraft);
-
+    // Update draft if it's a draft. If a draft doesn't exist (reviewId is -1), create review
+    if(req.body.reviewId!=-1){
+        result = await db.editReview(req.body.reviewId, req.body.text, req.body.datetime, req.body.isDraft);
+        
+        // if it's not a draft, delete the request
+        if(!req.body.isDraft){
+            await db.removeRequest(/*parameters!!!!!!! make sure to get requestId*/);
+        } 
+    }
+    else{
+        result = await db.insertReview(req.body.reviewerId, req.body.revieweeId, req.body.text, req.body.datetime, req.body.isDraft);
+        
+        // if it's not a draft, delete the request
+        if(!req.body.isDraft){
+            await db.removeRequest(/*parameters!!!!!!! make sure to get requestId*/);
+        } 
+    }
 });
 
 module.exports = router;
