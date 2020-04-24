@@ -13,7 +13,7 @@ class Write extends Component {
   state = {
     userId: 0,        // TODO: this might be obsolete. state.requester.userId replaces it
     isWriting: false,
-    //editingDraft: false   // 
+    //editingDraft: false   //
   };
 
   constructor(props) {
@@ -34,7 +34,7 @@ class Write extends Component {
       this.setState({requests: undefined});
     }
     //const res = await fetch(`/api/requests/${this.state.userId}`, { // OLD CALL
-    const res = await fetch(`/api/requests/${session.userId}`, {
+    const res = await fetch(`/api/user/${session.userId}/requests`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -70,17 +70,17 @@ class Write extends Component {
 
     let _this = this;         // keep a reference to this instance of the object
     //let date = new Date();    // get current date and time
-    
+
     //let datestring = `${date.getFullYear()}-${("0"+(date.getMonth()+1)).slice(-2)}-${("0"+date.getDate()).slice(-2)} ${("0"+date.getHours()).slice(-2)}:${("0"+date.getMinutes()).slice(-2)}:${("0"+date.getSeconds()).slice(-2)}`;
     let reviewId = (_this.state.review) ? _this.state.review.reviewId : -1;
 
-    const res = await fetch("/api/auth/writereview", {
+    const res = await fetch("/api/review", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
-      
+
       // function expects the following:
       // reviewId: int representing Id of current review (if editing one)
       // requestId: int, represents selected request's Id
@@ -110,7 +110,7 @@ class Write extends Component {
       });
       // refresh requesters
       this.getRequesters();
-    } 
+    }
     else {
       this.setState({
         showTopAlert: false,
