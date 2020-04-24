@@ -13,24 +13,21 @@ router.post('/', async function(req, res, next) {
     }
 
     var result; // do I need this?
-
     // Update draft if it's a draft. If a draft doesn't exist (reviewId is -1), create review
-    if(req.body.reviewId!=-1){
+    if(req.body.reviewId!==-1){
         result = await db.editReview(req.body.reviewId, req.body.text, req.body.datetime, req.body.isDraft);
-
-        // if it's not a draft, delete the request
-        if(!req.body.isDraft){
-            await db.removeRequest(/*parameters!!!!!!! make sure to get requestId*/);
-        }
     }
     else{
         result = await db.insertReview(req.body.reviewerId, req.body.revieweeId, req.body.text, req.body.datetime, req.body.isDraft);
-
-        // if it's not a draft, delete the request
-        if(!req.body.isDraft){
-            await db.removeRequest(/*parameters!!!!!!! make sure to get requestId*/);
-        }
     }
+
+    // if it's not a draft, delete the request
+    if(!req.body.isDraft){
+        // TODO: create this function
+        // await db.removeRequest(/*parameters!!!!!!! make sure to get requestId*/);
+    }
+
+    res.send(200);
 });
 
 module.exports = router;

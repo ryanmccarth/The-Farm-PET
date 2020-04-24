@@ -48,46 +48,45 @@ class PetDB {
             });
         });
     }
-    
+
     // Purpose: to return a Promise that adds a review row to the reviews table upon resolving
     // Input:   reviewerId - integer representing the writer's Id (userId, not companyUserId)
     //          revieweeId - integer representing the receiver's Id (userId, not companyUserId)
     //          text       - string to be written as the reviewText
     //          dateTime   - date and time of submission in the format "YYYY-MM-DD HH:MI:SS" (important)
     //          isDraft    - boolean representing whether this is a draft or final
-    // Returns: Promise object that inserts a review row with given parameters upon resolving  
+    // Returns: Promise object that inserts a review row with given parameters upon resolving
     insertReview(reviewerId, revieweeId, text, datetime, isDraft) {
         if(!this.connected) return;                 // check connection
-        
-        const c = this.c;
-        draftStatus = isDraft ? "TRUE" : "FALSE";   // make answer uppercase for mySQL to handle
 
+        const c = this.c;
         // TODO: should we check if users exist before inserting?? if not, disregard
         return new Promise((resolve) => {
-            c.query(`INSERT INTO reviews (writtenBy, writtenFor, reviewText, lastUpdated, isDraft) VALUES (${mysql.escape(reviewerId)}, ${mysql.escape(revieweeId)}, '${mysql.escape(text)}', '${mysql.escape(datetime)}', ${mysql.escape(draftStatus)})`, function (error, results, fields) {
+            c.query(`INSERT INTO reviews (writtenBy, writtenFor, reviewText, lastUpdated, isDraft) VALUES (?,?,?,?,?)`,
+            [reviewerId, revieweeId, text, datetime, isDraft]    ,
+            function (error, results, fields) {
                 if(error) throw error;
-                
                 resolve(true);
             });
         });
     }
-    
+
     // Purpose: to return a Promise that updates the text, datetime and draft status of a review upon resolving
     // Input:   reviewId - integer representing the Id of the review that will be edited
     //          text     - string to be written as reviewText
     //          dateTime - date and time of edit in the format "YYYY-MM-DD HH:MI:SS" (important)
     //          isDraft  - boolean representing whether this is a draft or final
-    // Returns: Promise object that replaces the reviewText, lastUpdated and isDraft fields in the review 
+    // Returns: Promise object that replaces the reviewText, lastUpdated and isDraft fields in the review
     //          referenced by reviewId upon resolving
     editReview(reviewId, text, datetime, isDraft) {
         if(!this.connected) return;
         const c = this.c;
-        const draftStatus = isDraft ? "TRUE" : "FALSE";
-        
-        return new Promise((resolve) => {
-            c.query(`UPDATE reviews SET reviewText = '${mysql.escape(text)}', lastUpdated = '${mysql.escape(datetime)}', isDraft = ${mysql.escape(draftStatus)} WHERE reviewId = ${mysql.escape(reviewId)}`, function(error, results, fields){
-                if(error) throw error;
 
+        return new Promise((resolve) => {
+            c.query(`UPDATE reviews SET reviewText=?, lastUpdated=?, isDraft=? WHERE reviewId=?`,
+            [text, datetime, isDraft, reviewId],
+            function(error, results, fields){
+                if(error) throw error;
                 resolve(true);
             });
         });

@@ -15,7 +15,6 @@ router.get('/:userId/requests', async function(req, res, next) {
     // draftId: id of review (if a draft exists) getReview(requestedBy, requestedFor).<...>.reviewId
     // NOTE: draftId is used for both loading the draft and marking the row by color
     res.json([
-        {name: 'Oscar Gibson', userId: 0, requestId: 123, draftId: -1},
         {name: 'Aaron Wright', userId: 1, requestId: 124, draftId: -1},
         {name: 'Trifon Trifonov', userId: 2, requestId: 125, draftId: -1},
         {name: 'Zachary Williams', userId: 3, requestId: 126, draftId: 222},

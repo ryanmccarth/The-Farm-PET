@@ -62,7 +62,6 @@ class Write extends Component {
 
   async submitReview(text, isDraft) {
     console.log(`submitting ${text} for ${this.state.request.name}`);
-
     const res = await fetch("/api/review", {
       method: "POST",
       headers: {
