@@ -17,13 +17,15 @@ class WriteReview extends Component {
         <h4>Write a review for {this.props.request.name}</h4>
         <Form id="write-review-form" onSubmit={this.submitReview.bind(this)}>
           <Form.Group controlId="writeReviewTextarea">
-            { this.props.drafttext===""
-            ? <Form.Control as="textarea" rows="6" placeholder = "Write review here..." required />
-            : <Form.Control as="textarea" rows="6" placeholder = "Write review here..." defaultValue = {this.props.drafttext} required />
-            }
+            <Form.Control as="textarea" rows="6" placeholder = "Write review here..."
+            defaultValue = {this.props.drafttext ? this.props.drafttext : ""} required
+            style={this.state.selected === null || this.props.isLoading ? { pointerEvents: 'none' } : {}}
+            disabled = {this.props.isLoading} />
           </Form.Group>
           <div id="write-btn-back">
             <Button
+            style={this.props.isLoading ? { pointerEvents: 'none' } : {}}
+            disabled={this.props.isLoading}
             variant = "outline-primary"
             onClick = {this.props.onBackButton}>
               Back
@@ -31,6 +33,8 @@ class WriteReview extends Component {
           </div>
           <div id="write-btn-submit" className="text-right">
             <Button
+            style={this.props.isLoading ? { pointerEvents: 'none' } : {}}
+            disabled={this.props.isLoading}
             variant = "primary"
             type = "submit">
               Submit

@@ -61,7 +61,9 @@ class Write extends Component {
   }
 
   async submitReview(text, isDraft) {
-    console.log(`submitting ${text} for ${this.state.request.name}`);
+    this.setState({isLoading: true});
+    document.body.style.cursor='wait';
+
     const res = await fetch("/api/review", {
       method: "POST",
       headers: {
@@ -86,9 +88,12 @@ class Write extends Component {
       })
     });
 
+    document.body.style.cursor='default';
+
     // if success
     if (res.status === 200) {
       this.setState({
+        isLoading: false,
         isWriting: false,
         showTopAlert: true,
         showBottomAlert: false,
@@ -102,6 +107,7 @@ class Write extends Component {
     }
     else {
       this.setState({
+        isLoading: false,
         showTopAlert: false,
         showBottomAlert: true,
         bottomAlertVariant: "danger",
@@ -142,7 +148,7 @@ class Write extends Component {
           }
         </div>
         {this.state.isWriting
-        ? <WriteReview request={this.state.request} drafttext = {this.state.drafttext} onBackButton={this.backButton.bind(this)} onSubmit={this.submitReview.bind(this)} />
+        ? <WriteReview request={this.state.request} drafttext = {this.state.drafttext} onBackButton={this.backButton.bind(this)} onSubmit={this.submitReview.bind(this)} isLoading={this.state.isLoading} />
         : <WriteRequesters onRequestSelect={this.handleRequestSelect.bind(this)} requests={this.state.requests} isLoading={this.state.isLoading} />}
         <div id="alert-container-bottom">
           {this.state.showBottomAlert
