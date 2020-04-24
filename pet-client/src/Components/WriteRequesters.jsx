@@ -69,16 +69,15 @@ class WriteRequesters extends Component {
 
         const writeButton = (
             <Button
-            style={this.state.selected === null ? { pointerEvents: 'none' } : {}}
+            style={this.state.selected === null || this.props.isLoading ? { pointerEvents: 'none' } : {}}
             variant = "primary"
             type = "button"
             onClick = {this.writeButtonClick.bind(this)}
-            disabled={this.state.selected === null}>
+            disabled={this.state.selected === null || this.props.isLoading}>
                 Write Review
             </Button>
         )
 
-        //TODO: shouldn't this be negated? @Stephan
         if (this.props.requests === undefined || this.props.requests.length) {
             return (
                 <div id="writeRequesterContainer">
@@ -125,9 +124,9 @@ class WriteRequesters extends Component {
     // Purpose: mark every request that has a draft associated with it by a darker color (user's sake)
     // sets Id to "draftentry", referenced CSS file at top styles it
     draftEntryNameFormat(row, rowIdx) {
-        if (row.draftId == -1) {
+        if (row.draftId === -1) {
           return 'draftentry'
-        } 
+        }
         else return ;
     }
 

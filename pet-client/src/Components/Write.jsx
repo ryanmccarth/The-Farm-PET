@@ -11,9 +11,9 @@ import './temp/WriteContent.css';
 
 class Write extends Component {
   state = {
-    //userId: 0,        // obsolete. session.userId replaces it. For requester Id, check request.name
     isWriting: false,
-    request: null       // TODO: reset request (set to null) after a review is submitted
+    isLoading: false,
+    request: null
   };
 
   constructor(props) {
@@ -33,7 +33,6 @@ class Write extends Component {
     if (this._ismounted) {
       this.setState({requests: undefined});
     }
-    //const res = await fetch(`/api/requests/${this.state.userId}`, { // OLD CALL
     const res = await fetch(`/api/user/${session.userId}/requests`, {
       method: "GET",
       headers: {
@@ -64,10 +63,6 @@ class Write extends Component {
   async submitReview(text, isDraft) {
     console.log(`submitting ${text} for ${this.state.request.name}`);
 
-    //let datestring = `${date.getFullYear()}-${("0"+(date.getMonth()+1)).slice(-2)}-${("0"+date.getDate()).slice(-2)} ${("0"+date.getHours()).slice(-2)}:${("0"+date.getMinutes()).slice(-2)}:${("0"+date.getSeconds()).slice(-2)}`;
-    //let reviewId = (this.state.request.) ? this.state.review.reviewId : -1;
-    // 
-
     const res = await fetch("/api/review", {
       method: "POST",
       headers: {
@@ -82,10 +77,10 @@ class Write extends Component {
       // datetime: String in format "YYYY-MM-DD hh:mm:ss"
       // isDraft: boolean
       body: JSON.stringify({
-        reviewId: this.state.request.draftId,                       // reviewId will be -1 if this isn't a previously saved draft
-        requestId: this.state.request.requestId, // TODO: requestId should be taken from the selected request
+        reviewId: this.state.request.draftId,    // reviewId will be -1 if this isn't a previously saved draft
+        requestId: this.state.request.requestId,
         reviewerId: session.userId,
-        revieweeId: this.state.request.userId, // these could be switched, logic is funky rn
+        revieweeId: this.state.request.userId,
         text: text,
         datetime: new Date().toISOString().slice(0, 19).replace('T', ' '),
         isDraft: isDraft,
@@ -117,14 +112,23 @@ class Write extends Component {
   }
 
   async getDraft() {
-    const res = await fetch();    // TODO: fix this to call review fetching function for single review
-                                  // with parameter in body being this.state.request.draftId
+    // const res = await fetch();    // TODO: fix this to call review fetching function for single review
+    //                               // with parameter in body this.state.request.draftId
+
+    // delay to simulate the network call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return "example draft text";
   }
 
-  handleRequestSelect(request) {
-    let drafttext = (this.state.request.draftId == -1) ? "" : this.getDraft();
-    this.setState({drafttext: drafttext});
-    this.setState({isWriting: true, request: request});   // setting this switches to the WriteReview page
+  async handleRequestSelect(request) {
+    let drafttext = "";
+    if (request.draftId !== -1) {
+      this.setState({isLoading: true});
+      document.body.style.cursor='wait';
+      drafttext = await this.getDraft();
+      document.body.style.cursor='default';
+    }
+    this.setState({isWriting: true, request: request, drafttext: drafttext, isLoading: false});
   }
 
   render() {
@@ -140,7 +144,7 @@ class Write extends Component {
         </div>
         {this.state.isWriting
         ? <WriteReview request={this.state.request} drafttext = {this.state.drafttext} onBackButton={this.backButton.bind(this)} onSubmit={this.submitReview.bind(this)} />
-        : <WriteRequesters onRequestSelect={this.handleRequestSelect.bind(this)} requests={this.state.requests} />}
+        : <WriteRequesters onRequestSelect={this.handleRequestSelect.bind(this)} requests={this.state.requests} isLoading={this.state.isLoading} />}
         <div id="alert-container-bottom">
           {this.state.showBottomAlert
             ? <Alert variant={this.state.bottomAlertVariant} dismissible onClose={() => this.setState({showBottomAlert: false})}>

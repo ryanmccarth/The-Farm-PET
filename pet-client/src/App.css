@@ -6,3 +6,7 @@
 #login-form {
   width: 450px;
 }
+
+body {
+  min-height: 100vh;
+}
