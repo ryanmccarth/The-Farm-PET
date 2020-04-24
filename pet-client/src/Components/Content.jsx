@@ -8,7 +8,12 @@ import Write from "./WriteReviews";
 class Content extends Component {
   displayContent() {
     if (this.props.page === "login") {
-      return <Login />;
+      return (
+        <Login
+          updateSession={this.props.updateSession}
+          updateContent={this.props.updateContent}
+        />
+      );
     }
     if (this.props.page === "read") {
       return <Read />;
