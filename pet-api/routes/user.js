@@ -5,7 +5,7 @@ var db = require('../db');
 /* get requests sent to a given user */
 router.get('/:userId/requests', async function(req, res, next) {
     if (!db.isConnected()) { res.status(500); return; }
-    console.log("Sending requests for userId " + req.params.userId);
+    console.log("Getting requests for userId " + req.params.userId);
 
     // hardcoded for now
     // data format: (to be used when making calls to getRequests and etc)
