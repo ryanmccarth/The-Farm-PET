@@ -13,6 +13,7 @@ class WriteReview extends Component {
   }
 
   // TODO: make it load the draft!! if there is one. can check using this.props.request.draftId
+  // the draft text is passed in as this.props.drafttext!
 
   render() {
     return<div id="writeReviewContainer">

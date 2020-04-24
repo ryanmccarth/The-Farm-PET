@@ -92,6 +92,7 @@ class Write extends Component {
       })
     });
 
+    // if success
     if (res.status === 200) {
       this.setState({
         isWriting: false,
@@ -99,7 +100,8 @@ class Write extends Component {
         showBottomAlert: false,
         topAlertVariant: "success",
         topAlertContent: `Review for ${this.state.request.name} submitted successfully`,
-        request: null, // reset selected request upon success
+        request: null,        // reset selected request upon success
+        drafttext: ""         // reset draft text upon success
       });
       // refresh requests
       this.getRequests();
@@ -114,8 +116,15 @@ class Write extends Component {
     }
   }
 
+  async getDraft() {
+    const res = await fetch();    // TODO: fix this to call review fetching function for single review
+                                  // with parameter in body this.state.request.draftId
+  }
+
   handleRequestSelect(request) {
-    this.setState({isWriting: true, request: request}); 
+    let drafttext = (this.state.request.draftId == -1) ? "" : this.getDraft();
+    this.setState({drafttext: drafttext});
+    this.setState({isWriting: true, request: request});
   }
 
   render() {
@@ -130,7 +139,7 @@ class Write extends Component {
           }
         </div>
         {this.state.isWriting
-        ? <WriteReview request={this.state.request} onBackButton={this.backButton.bind(this)} onSubmit={this.submitReview.bind(this)} />
+        ? <WriteReview request={this.state.request} drafttext = {this.state.drafttext} onBackButton={this.backButton.bind(this)} onSubmit={this.submitReview.bind(this)} />
         : <WriteRequesters onRequestSelect={this.handleRequestSelect.bind(this)} requests={this.state.requests} />}
         <div id="alert-container-bottom">
           {this.state.showBottomAlert
