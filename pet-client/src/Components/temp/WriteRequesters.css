@@ -7,3 +7,7 @@
     width: 100%;
     text-align: right;
 }
+
+#draftentry {
+    background-color: darkgray;
+}

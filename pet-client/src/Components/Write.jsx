@@ -11,9 +11,9 @@ import './temp/WriteContent.css';
 
 class Write extends Component {
   state = {
-    userId: 0,
+    userId: 0,        // TODO: this might be obsolete. state.requester.userId replaces it
     isWriting: false,
-    //editingDraft: false   // TODO used to keep track whether currently editing draft or writing new review
+    //editingDraft: false   // 
   };
 
   constructor(props) {
@@ -31,9 +31,10 @@ class Write extends Component {
 
   async getRequesters() {
     if (this._ismounted) {
-      this.setState({employees: undefined});
+      this.setState({requests: undefined});
     }
-    const res = await fetch(`/api/requests/${this.state.userId}`, {
+    //const res = await fetch(`/api/requests/${this.state.userId}`, { // OLD CALL
+    const res = await fetch(`/api/requests/${session.userId}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -50,9 +51,9 @@ class Write extends Component {
     }
     const body = await res.json();
     if (this._ismounted) {
-      this.setState({employees: body});
+      this.setState({requests: body});
     } else {
-      this.state.employees = body;
+      this.state.requests = body;
     }
   }
 
@@ -82,7 +83,7 @@ class Write extends Component {
       
       // function expects the following:
       // reviewId: int representing Id of current review (if editing one)
-      // requestId: represents selected request's Id
+      // requestId: int, represents selected request's Id
       // reviewerId: int, revieweeId: int, text: String
       // datetime: String in format "YYYY-MM-DD hh:mm:ss"
       // isDraft: boolean
@@ -93,7 +94,7 @@ class Write extends Component {
         revieweeId: _this.state.requester.userId, // these could be switched, logic is funky rn
         text: text,
         datetime: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        isDraft: isDraft
+        isDraft: isDraft,
         //wasDraft: _this.state.editingDraft
         // TODO: after the call, change the global request id
       })
@@ -122,6 +123,8 @@ class Write extends Component {
 
   handleRequesterSelect(requester) {
     this.setState({isWriting: true, requester: requester}); // TODO: make it add request to global state
+    // TODO: IMPORTANT!! Change "requester" fields in this whole file to "request" (returned entry from WriteRequesters.jsx)
+    // the returned entry is in the format "request" and not "requester", look at WriteRequesters.jsx "selected" state field to understand
   }
 
   render() {
@@ -137,7 +140,7 @@ class Write extends Component {
         </div>
         {this.state.isWriting
         ? <WriteReview requester={this.state.requester} onBackButton={this.backButton.bind(this)} onSubmit={this.submitReview.bind(this)} />
-        : <WriteRequesters onRequesterSelect={this.handleRequesterSelect.bind(this)} employees={this.state.employees} />}
+        : <WriteRequesters onRequesterSelect={this.handleRequesterSelect.bind(this)} requests={this.state.requests} />}
         <div id="alert-container-bottom">
           {this.state.showBottomAlert
             ? <Alert variant={this.state.bottomAlertVariant} dismissible onClose={() => this.setState({showBottomAlert: false})}>

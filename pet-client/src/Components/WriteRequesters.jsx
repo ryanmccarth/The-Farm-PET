@@ -34,10 +34,13 @@ const EmptyTable = (props) => (
 class WriteRequesters extends Component {
     state = {
         columns1: [
-            {dataField: 'name',text: 'Employee Name',headerStyle: { width: '100%', backgroundColor: '#eee', color: '#000'},},
-            {dataField: 'userId',text: 'userId', hidden: true},
+            // for implementation details, look at pet-api/routes/requests.js
+            {dataField: 'name', text: 'Employee Name', headerStyle: { width: '100%', backgroundColor: '#eee', color: '#000'},},
+            {dataField: 'userId', text: 'userId', hidden: true},
+            {dataField: 'requestId', text:'requestId', hidden: true},
+            {dataField: 'draftId', text:'draftId', hidden: true},  // will be -1 if no draft exists
         ],
-        selected: null,
+        selected: null, // will be a "row" element. This means it will have above fields
     };
 
     writeButtonClick(e) {
@@ -74,21 +77,23 @@ class WriteRequesters extends Component {
             </Button>
         )
 
-        if (this.props.employees === undefined || this.props.employees.length) {
+        //TODO: shouldn't this be negated? 
+        if (this.props.requests === undefined || this.props.requests.length) {
             return (
                 <div id="writeRequesterContainer">
                     <h4>The following users have requested your review</h4>
                     <p>Please select an employee to write a review for them.</p>
                     <div id='requesterTable'>
-                    { this.props.employees === undefined
+                    { this.props.requests === undefined
                     ? <EmptyTable columns={ this.state.columns1 } />
                     : <BootstrapTable
                         hover
                         keyField='name'
-                        data={ this.props.employees }
+                        data={ this.props.requests }
                         columns={ this.state.columns1 }
                         selectRow={ selectRow }
                         rowStyle={rowStyle}
+                        trClassName={this.draftEntryNameFormat}
                         pagination={ pagination }
                       />
                     }
@@ -114,6 +119,15 @@ class WriteRequesters extends Component {
             );
         }
 
+    }
+
+    // Purpose: mark every request that has a draft associated with it by a darker color (user's sake)
+    // sets Id to "draftentry", referenced CSS file at top styles it
+    draftEntryNameFormat(row, rowIdx) {
+        if (row.draftId == -1) {
+          return 'draftentry'
+        } 
+        else return ;
     }
 
 }
