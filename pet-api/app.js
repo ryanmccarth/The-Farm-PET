@@ -6,10 +6,9 @@ var logger = require('morgan');
 var jsonErrorHandler = require('express-json-error-handler');
 
 var authRouter = require('./routes/auth');
-var requestsRouter = require('./routes/requests');
-var submitReviewRouter = require('./routes/writereview');
 var userRouter = require('./routes/user');
 var companyRouter = require('./routes/companies');
+var reviewRouter = require('./routes/review');
 
 var app = express();
 
@@ -24,13 +23,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth', authRouter);
-<<<<<<< HEAD
-app.use('/api/requests', requestsRouter);
-app.use('/api/writereview', submitReviewRouter); // is this right?
-=======
 app.use('/api/user', userRouter);
 app.use('/api/companies', companyRouter);
->>>>>>> master
+app.use('/api/review', reviewRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
