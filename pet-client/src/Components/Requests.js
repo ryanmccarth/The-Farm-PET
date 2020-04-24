@@ -47,7 +47,7 @@ class Requests extends Component {
 
     //function that initializes list of employees
     async getEmployees(){
-      var url = 'api/users/' + session.userId + "/" + session.companyId;
+      var url = 'api/companies/' + session.companyId + '/users';
       let res = await fetch(url, {
         method: 'GET',
         headers: {
@@ -59,14 +59,15 @@ class Requests extends Component {
 
       //wait for the Promise to resolve first
       while(!Array.isArray(employees));
+      employees = employees.filter(function(employee){return employee.id !== session.userId;})
       //then initialize the table
-      this.setState({employees1: employees, employeesOG: employees.slice(0)});
+      this.setState({employees1: employees});
     }
 
     //What happens when you click the submit button
     async submit(){
       if(this.state.employees2.length !== 0){
-        let res = await fetch('/api/requests', {
+        let res = await fetch('/api/request', {
           method: 'POST',
           headers: {
             Accept: "application/json",

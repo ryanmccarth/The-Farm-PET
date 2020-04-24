@@ -63,13 +63,13 @@ class PetDB {
         }
     }
 
-    getNames(user, company) {
+    getNames(company) {
         if (!this.connected) return;
         const c = this.c
         var sql = "SELECT CONCAT(firstName,' ',lastName) AS name, userID AS id " +
-        "FROM users WHERE userID <> ? AND companyID = ? ORDER BY name";
+        "FROM users WHERE companyID = ? ORDER BY name";
         return new Promise((resolve) => {
-            c.query(sql, [user, company], function (error, results) {
+            c.query(sql, [company], function (error, results) {
                 if (error) { throw error; }
                 
                 resolve(results);                
