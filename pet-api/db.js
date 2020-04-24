@@ -91,6 +91,33 @@ class PetDB {
             });
         });
     }
+
+    getRequestsByRequesteeId(requesteeId) {
+        if(!this.connected) return;
+        const c = this.c;
+
+        return new Promise((resolve) => {
+            c.query("SELECT * FROM requests WHERE requestedFor=?", [requesteeId], function(error, results, fields){
+                if(error) throw error;
+                resolve(results);
+            });
+        });
+    }
+
+    getManyUsersByUserId(userIds) {
+        if(!this.connected) return;
+        const c = this.c;
+        const placeholders = new Array(userIds.length);
+        placeholders.fill("?");
+
+        return new Promise((resolve) => {
+            c.query(`SELECT * FROM users WHERE userId in (${placeholders.join(",")})`, userIds, function(error, results, fields){
+                if(error) throw error;
+                resolve(results);
+            });
+        });
+    }
+
 }
 
 module.exports = new PetDB();
