@@ -118,6 +118,18 @@ class PetDB {
         });
     }
 
+    deleteRequest(requestId) {
+        if(!this.connected) return;
+        const c = this.c;
+
+        return new Promise((resolve) => {
+            c.query("DELETE FROM requests WHERE requestId=?", [requestId], function(error, results, fields){
+                if(error) throw error;
+                resolve(true);
+            });
+        });
+    }
+
 }
 
 module.exports = new PetDB();

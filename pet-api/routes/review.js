@@ -23,8 +23,7 @@ router.post('/', async function(req, res, next) {
 
     // if it's not a draft, delete the request
     if(!req.body.isDraft){
-        // TODO: create this function
-        // await db.removeRequest(/*parameters!!!!!!! make sure to get requestId*/);
+        await db.deleteRequest(req.body.requestId);
     }
 
     res.send(200);
