@@ -39,12 +39,13 @@ class WriteRequesters extends Component {
             {dataField: 'userId', text: 'userId', hidden: true},
             {dataField: 'requestId', text:'requestId', hidden: true},
             {dataField: 'draftId', text:'draftId', hidden: true},  // will be -1 if no draft exists
+                                                                   // TODO: IMPORTANT!!
         ],
         selected: null, // will be a "row" element. This means it will have above fields
     };
 
     writeButtonClick(e) {
-        this.props.onRequesterSelect(this.state.selected)
+        this.props.onRequestSelect(this.state.selected)
     }
 
     render() {
@@ -77,7 +78,7 @@ class WriteRequesters extends Component {
             </Button>
         )
 
-        //TODO: shouldn't this be negated? 
+        //TODO: shouldn't this be negated? @Stephan
         if (this.props.requests === undefined || this.props.requests.length) {
             return (
                 <div id="writeRequesterContainer">
