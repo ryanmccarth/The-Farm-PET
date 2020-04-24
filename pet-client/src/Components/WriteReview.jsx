@@ -12,15 +12,15 @@ class WriteReview extends Component {
     this.props.onSubmit(e.target.elements[0].value);
   }
 
-  // TODO: make it load the draft!! if there is one. can check using this.props.request.draftId
-  // the draft text is passed in as this.props.drafttext!
-
   render() {
     return<div id="writeReviewContainer">
         <h4>Write a review for {this.props.request.name}</h4>
         <Form id="write-review-form" onSubmit={this.submitReview.bind(this)}>
           <Form.Group controlId="writeReviewTextarea">
-            <Form.Control as="textarea" rows="6" placeholder = "Write review here..." required />
+            { this.props.drafttext==""
+            ? <Form.Control as="textarea" rows="6" placeholder = "Write review here..." required />
+            : <Form.Control as="textarea" rows="6" placeholder = "Write review here..." value = {this.props.drafttext} required />
+            }
           </Form.Group>
           <div id="write-btn-back">
             <Button

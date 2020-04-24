@@ -118,13 +118,13 @@ class Write extends Component {
 
   async getDraft() {
     const res = await fetch();    // TODO: fix this to call review fetching function for single review
-                                  // with parameter in body this.state.request.draftId
+                                  // with parameter in body being this.state.request.draftId
   }
 
   handleRequestSelect(request) {
     let drafttext = (this.state.request.draftId == -1) ? "" : this.getDraft();
     this.setState({drafttext: drafttext});
-    this.setState({isWriting: true, request: request});
+    this.setState({isWriting: true, request: request});   // setting this switches to the WriteReview page
   }
 
   render() {
