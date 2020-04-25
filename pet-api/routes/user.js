@@ -8,6 +8,11 @@ router.get('/:userId/requests', async function(req, res, next) {
     console.log("Getting requests for userId " + req.params.userId);
 
     requests = await db.getRequestsByRequesteeId(req.params.userId);
+    if (requests.length == 0) {
+        res.json([]);
+        return;
+    }
+
     users = await db.getManyUsersByUserId(requests.map(request => request.requestedBy));
 
     // some sanity checking

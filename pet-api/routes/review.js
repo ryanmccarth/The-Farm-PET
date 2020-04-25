@@ -26,7 +26,7 @@ router.post('/', async function(req, res, next) {
         await db.deleteRequest(req.body.requestId);
     }
 
-    res.send(200);
+    res.sendStatus(200);
 });
 
 module.exports = router;
