@@ -32,7 +32,7 @@ CREATE TABLE requests (
     requestId INT AUTO_INCREMENT PRIMARY KEY,
     requestedBy INT,
     requestedFor INT,
-    created DATETIME,
+    created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (requestedBy) REFERENCES users(userId),
     FOREIGN KEY (requestedFor) REFERENCES users(userId)
 );

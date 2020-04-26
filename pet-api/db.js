@@ -130,6 +130,33 @@ class PetDB {
         });
     }
 
+    sendRequests(employeesList, id) {
+        const listLength = employeesList.length;
+        const c = this.c;
+        var i = 0;
+        while(i < listLength){
+            var sql = "INSERT INTO requests (requestedBy, requestedFor) SELECT ?, ?" +
+            " WHERE NOT EXISTS (SELECT * FROM requests WHERE requestedBy=? AND requestedFor=?)";
+            c.query(sql, [id, employeesList[i].id, id, employeesList[i].id], function(error, results, fields){
+                if (error) throw error;
+            });
+            i++;
+        }
+    }
+
+    getNames(company) {
+        if (!this.connected) return;
+        const c = this.c
+        var sql = "SELECT CONCAT(firstName,' ',lastName) AS name, userID AS id " +
+        "FROM users WHERE companyID = ? ORDER BY name";
+        return new Promise((resolve) => {
+            c.query(sql, [company], function (error, results) {
+                if (error) { throw error; }
+
+                resolve(results);
+            });
+        });
+    }
 }
 
 module.exports = new PetDB();
