@@ -7,13 +7,13 @@ router.get('/:userId/requests', async function(req, res, next) {
     if (!db.isConnected()) { res.status(500); return; }
     console.log("Getting requests for userId " + req.params.userId);
 
-    requests = await db.getRequestsByRequesteeId(req.params.userId);
+    const requests = await db.getRequestsByRequesteeId(req.params.userId);
     if (requests.length == 0) {
         res.json([]);
         return;
     }
 
-    users = await db.getManyUsersByUserId(requests.map(request => request.requestedBy));
+    const users = await db.getManyUsersByUserId(requests.map(request => request.requestedBy));
 
     // some sanity checking
     if (requests.length !== users.length) {

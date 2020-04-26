@@ -113,6 +113,15 @@ class PetDB {
         return new Promise((resolve) => {
             c.query(`SELECT * FROM users WHERE userId in (${placeholders.join(",")})`, userIds, function(error, results, fields){
                 if(error) throw error;
+
+                const reference_object = {};
+                for (var i = 0; i < userIds.length; i++) {
+                    reference_object[userIds[i]] = i;
+                }
+                results.sort(function(a, b) {
+                    return reference_object[a.userId] - reference_object[b.userId];
+                });
+
                 resolve(results);
             });
         });
