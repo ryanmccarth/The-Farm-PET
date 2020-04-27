@@ -189,7 +189,7 @@ class PetDB {
         const c = this.c;
 
         return new Promise((resolve) => {
-            c.query("SELECT * FROM reviews WHERE writtenFor=?", [id], function(error, results, fields){
+            c.query("SELECT * FROM reviews WHERE (writtenFor=? AND isDraft=FALSE)", [id], function(error, results, fields){
                 if(error) throw error;
                 if(results.length){
                     resolve(results);
