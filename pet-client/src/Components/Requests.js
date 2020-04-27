@@ -56,8 +56,10 @@ class Requests extends Component {
       });
       let employees = await res.json();
 
+      /* this isn't necessary because await already does that */
       //wait for the Promise to resolve first
-      while(!Array.isArray(employees));
+      // while(!Array.isArray(employees));
+
       employees = employees.filter(function(employee){return employee.id !== session.userId;})
       //then initialize the table
       this.setState({employees1: employees});

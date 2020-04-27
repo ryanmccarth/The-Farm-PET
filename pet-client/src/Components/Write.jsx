@@ -143,7 +143,7 @@ class Write extends Component {
       })
       return;
     }
-    
+
     const body = await res.json();
     return body.reviewText;
 

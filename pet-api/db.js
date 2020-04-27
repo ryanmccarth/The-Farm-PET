@@ -165,6 +165,7 @@ class PetDB {
         return new Promise((resolve) => {
             c.query(sql, [company], function (error, results) {
                 if (error) { throw error; }
+                resolve(results);
             });
         });
     }
