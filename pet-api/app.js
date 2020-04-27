@@ -10,6 +10,7 @@ var userRouter = require('./routes/user');
 var companyRouter = require('./routes/companies');
 var reviewRouter = require('./routes/review');
 var requestRouter = require('./routes/request');
+var draftRouter = require('./routes/draft');
 
 var app = express();
 
@@ -25,9 +26,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+
 app.use('/api/review', reviewRouter);
 app.use('/api/request', requestRouter);
 app.use('/api/companies', companyRouter);
+app.use('/api/draft', draftRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

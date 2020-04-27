@@ -24,6 +24,28 @@ router.get('/:userId/requests', async function(req, res, next) {
         return;
     }
 
+    // draft structure:
+    // [0] draft
+    //     "writtenFor": user Id of requster
+    //     "reviewId": Id of the draft (which is actually a review) 
+    // [1] draft etc...
+    drafts = await db.getDraftInfoWrittenBy(req.params.userId);
+    
+    // create array of same size as requests, as to match draft to request by index
+    let draftmatcharry = new Array(requests.length);
+    draftmatcharry.fill(-1);
+
+    // compare each draft (outer) to each request/user (inner) and assing draftId to correct index
+    for(let draftindex = 0; draftindex < drafts.length; draftindex++){             
+        for(let requestindex = 0; requestindex < requests.length; requestindex++){ 
+            if(drafts[draftindex].writtenFor === users[requestindex].userId){
+                draftmatcharry[requestindex] = drafts[draftindex].reviewId;        // assign draft Id to corresponding request index
+                break;
+            }
+        }
+    }
+
+
     r = [];
     for (let i = 0; i < requests.length; i++) {
         // data format: (to be used when making calls to getRequests and etc)
@@ -36,7 +58,7 @@ router.get('/:userId/requests', async function(req, res, next) {
             name: `${users[i].firstName} ${users[i].lastName}`,
             userId: users[i].userId,
             requestId: requests[i].requestId,
-            draftId: -1 // drafts not implemented for now
+            draftId: draftmatcharry[i]
         })
     }
 

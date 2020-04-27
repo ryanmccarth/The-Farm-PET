@@ -122,12 +122,12 @@ class WriteRequesters extends Component {
     }
 
     // Purpose: mark every request that has a draft associated with it by a darker color (user's sake)
-    // sets Id to "draftentry", referenced CSS file at top styles it
+    // sets classname to "draftentry", referenced CSS file at top styles it
     draftEntryNameFormat(row, rowIdx) {
-        if (row.draftId === -1) {
+        if (row.draftId !== -1) {
           return 'draftentry'
         }
-        else return ;
+        else return '';
     }
 
 }
