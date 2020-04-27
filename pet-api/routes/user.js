@@ -92,8 +92,47 @@ router.get('/:userId/reviews', async function(req, res, next) {
         return;
     }
     else{
-        res.json(reviews);
-        return;
+        reviewerIds = []
+        recipientIds = []
+
+        for(let i = 0; i < reviews.length; i++){
+            reviewerIds.push(reviews[i].writtenBy)
+            recipientIds.push(reviews[i].writtenFor)
+        }
+
+        var mappedReviewer = new Map();
+        var mappedRecipient = new Map();
+        count = 0;
+        for(let i = 0; i < reviews.length; i++){
+            if(mappedReviewer.get(reviews[i].writtenBy) == undefined){
+                mappedReviewer.set(reviews[i].writtenBy, count)
+                count++
+            }
+        }
+        count = 0;
+        for(let i = 0; i < reviews.length; i++){
+            if(mappedRecipient.get(reviews[i].writtenFor) == undefined){
+                mappedRecipient.set(reviews[i].writtenFor, count)
+                count++
+            }
+        }
+
+        reviewers = await db.getManyUsersByUserId(reviewerIds);
+        recipients = await db.getManyUsersByUserId(recipientIds);
+        console.log(recipients)
+
+        returnList = []
+        for (let i = 0; i < reviews.length; i++) {
+            returnList.push({
+                reviewId: reviews[i].reviewId,
+                writtenBy: `${reviewers[mappedReviewer.get(reviews[i].writtenBy)].firstName} ${reviewers[mappedReviewer.get(reviews[i].writtenBy)].lastName}`,
+                writtenFor: `${recipients[mappedRecipient.get(reviews[i].writtenFor)].firstName} ${recipients[mappedRecipient.get(reviews[i].writtenFor)].lastName}`,
+                reviewText: reviews[i].reviewText,
+                lastUpdated: reviews[i].lastUpdated,
+                isDraft: reviews[i].isDraft // drafts not implemented for now
+            })
+        }
+        res.json(returnList);
     }
 });
 

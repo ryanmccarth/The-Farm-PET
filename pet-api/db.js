@@ -130,7 +130,7 @@ class PetDB {
 
     // Purpose: to delete a request with the given requestId
     // Input:   requestId - integer representing the desired request's requestId
-    // Output:  Promise object that returns true upon resolving 
+    // Output:  Promise object that returns true upon resolving
     deleteRequest(requestId) {
         if(!this.connected) return;
         const c = this.c;
@@ -190,20 +190,21 @@ class PetDB {
         return new Promise((resolve) => {
             c.query("SELECT * FROM reviews WHERE writtenFor=?", [id], function(error, results, fields){
                 if(error) throw error;
-                if(results.length)
+                if(results.length){
                     resolve(results);
+                }
                 else resolve(null);
             });
         });
     }
-    
+
     // Purpose: to return the text of a draft review with the given reviewId
     // Input:   draftId - integer representing the reviewId of the draft
     // Returns: Promise object that returns the desired draft (review) upon resolving
     getDraftById(draftId){
 
-        const c = this.c; 
-        
+        const c = this.c;
+
         return new Promise((resolve) => {
             c.query("SELECT reviewText FROM reviews WHERE reviewId=?", [draftId], function(error, results, fields){
                 if(error) throw error;

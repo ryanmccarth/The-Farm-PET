@@ -1,6 +1,5 @@
 import React from 'react';
 import './temp/ReadContent.css';
-import data from './temp/sample.json';
 import Button from 'react-bootstrap/Button';
 import BootstrapTable from 'react-bootstrap-table-next';
 import 'bootstrap/dist/css/bootstrap.min.css';
