@@ -49,6 +49,9 @@ class Write extends Component {
       return;
     }
     const body = await res.json();
+    console.log(`Requests: ${body}`);
+    //console.log(`Requests[0].draftId is ${body[0].draftId}`);
+    //console.log(`Requests[1].draftId is ${body[1].draftId}`);
     if (this._ismounted) {
       this.setState({requests: body});
     } else {
@@ -116,21 +119,47 @@ class Write extends Component {
     }
   }
 
-  async getDraft() {
+  async getDraft(request) {
     // const res = await fetch();    // TODO: fix this to call review fetching function for single review
     //                               // with parameter in body this.state.request.draftId
 
+    //console.log(`this.state.request is ${this.state.request}`)
+    //console.log(this.state.draft==null)
+    //
+
+    const res = await fetch(`/api/draft/${request.draftId}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (res.status !== 200) {
+      this.setState({
+        showBottomAlert: true,
+        bottomAlertVariant: "danger",
+        bottomAlertContent: "An unknown error occurred while retrieving the draft."
+      })
+      return;
+    }
+    
+    const body = await res.json();
+    return body.reviewText;
+
     // delay to simulate the network call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    return "example draft text";
+    //await new Promise(resolve => setTimeout(resolve, 1000));
+    //return "example draft text";
   }
 
   async handleRequestSelect(request) {
+    //this.setState({request: request});
     let drafttext = "";
     if (request.draftId !== -1) {
+      console.log(`request is ${request}`)
       this.setState({isLoading: true});
       document.body.style.cursor='wait';
-      drafttext = await this.getDraft();
+      drafttext = await this.getDraft(request);
       document.body.style.cursor='default';
     }
     this.setState({isWriting: true, request: request, drafttext: drafttext, isLoading: false});

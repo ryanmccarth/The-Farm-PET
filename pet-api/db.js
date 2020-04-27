@@ -110,6 +110,7 @@ class PetDB {
         const placeholders = new Array(userIds.length);
         placeholders.fill("?");
 
+        // shouldn't we escape the ${....} below?
         return new Promise((resolve) => {
             c.query(`SELECT * FROM users WHERE userId in (${placeholders.join(",")})`, userIds, function(error, results, fields){
                 if(error) throw error;
@@ -127,6 +128,9 @@ class PetDB {
         });
     }
 
+    // Purpose: to delete a request with the given requestId
+    // Input:   requestId - integer representing the desired request's requestId
+    // Output:  Promise object that returns true upon resolving 
     deleteRequest(requestId) {
         if(!this.connected) return;
         const c = this.c;
@@ -161,7 +165,19 @@ class PetDB {
         return new Promise((resolve) => {
             c.query(sql, [company], function (error, results) {
                 if (error) { throw error; }
+            });
+        });
+    }
 
+    // Purpose: to get unfinished drafts written by this reviewer and return who it was written for and the review's Id
+    // Input:   reviewerId - integer representing the writer of the draft. Used for the search query
+    // Returns: Promise object that, upon resolving, returns a list of reviews, each index containing the fields
+    //          writtenFor and reviewId.
+    getDraftInfoWrittenBy(reviewerId){
+        return new Promise((resolve) => {
+            const c = this.c;
+            c.query("SELECT writtenFor, reviewId FROM reviews WHERE writtenBy=? AND isDraft=TRUE", [reviewerId], function(error, results, fields){
+                if(error) throw error;
                 resolve(results);
             });
         });
@@ -176,7 +192,22 @@ class PetDB {
                 if(error) throw error;
                 if(results.length)
                     resolve(results);
-                else resolve(null)
+                else resolve(null);
+            });
+        });
+    }
+    
+    // Purpose: to return the text of a draft review with the given reviewId
+    // Input:   draftId - integer representing the reviewId of the draft
+    // Returns: Promise object that returns the desired draft (review) upon resolving
+    getDraftById(draftId){
+
+        const c = this.c; 
+        
+        return new Promise((resolve) => {
+            c.query("SELECT reviewText FROM reviews WHERE reviewId=?", [draftId], function(error, results, fields){
+                if(error) throw error;
+                resolve(results[0]);
             });
         });
     }

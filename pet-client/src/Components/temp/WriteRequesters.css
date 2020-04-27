@@ -8,6 +8,6 @@
     text-align: right;
 }
 
-#draftentry {
+.draftentry {
     background-color: darkgray;
 }
