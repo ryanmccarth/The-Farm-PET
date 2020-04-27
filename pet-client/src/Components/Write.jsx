@@ -101,7 +101,7 @@ class Write extends Component {
         showTopAlert: true,
         showBottomAlert: false,
         topAlertVariant: "success",
-        topAlertContent: `Review for ${this.state.request.name} submitted successfully`,
+        topAlertContent: `${isDraft ? "Draft" : "Review"} for ${this.state.request.name} ${isDraft ? "saved" : "submitted"} successfully`,
         request: null,        // reset selected request upon success
         drafttext: ""         // reset draft text upon success
       });
