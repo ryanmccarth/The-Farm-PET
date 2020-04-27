@@ -86,18 +86,38 @@ class NavBar extends Component {
             </li>
           </ul>
           <ul className="navbar-nav navbar-right">
-            <li className="nav-item">
-              <ConditionalTooltip tooltip={disabledButtonTooltip} show={!session.exists()}>
+            {session.exists()
+            ? /* forgive me for putting the styles here but it's way easier than creating a CSS file */
+              <>
+              <li className="nav-item" style={{
+                display: "block",
+                paddingTop: "0.5rem",
+                paddingBottom: "0.5rem",
+                color: "rgba(0,0,0,.5)",
+                marginRight: "0.5rem"
+              }}>
+                Hello, {session.firstName}
+              </li>
+              <li className="nav-item">
                 <a
-                  className={"nav-link" + (!session.exists() ? " disabled" : "")}
+                  className="nav-link"
                   href="top"
                   onClick={() => this.sessionLogout()}
                 >
                   Log Out
                 </a>
-              </ConditionalTooltip>
-            </li>
+              </li>
+              </>
+            : <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href=""
+                >
+                  Log in
+                </a>
+              </li>}
           </ul>
+
         </div>
       </nav>
     );
