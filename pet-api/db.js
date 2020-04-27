@@ -165,8 +165,9 @@ class PetDB {
         return new Promise((resolve) => {
             c.query("SELECT * FROM reviews WHERE writtenFor=?", [id], function(error, results, fields){
                 if(error) throw error;
-                if(results.length)
+                if(results.length){
                     resolve(results);
+                }
                 else resolve(null)
             });
         });

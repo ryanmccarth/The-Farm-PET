@@ -70,8 +70,29 @@ router.get('/:userId/reviews', async function(req, res, next) {
         return;
     }
     else{
-        res.json(reviews);
-        return;
+        reviewerIds = []
+        recipientIds = []
+
+        for(let i = 0; i < reviews.length; i++){
+            reviewerIds.push(reviews[i].writtenBy)
+            recipientIds.push(reviews[i].writtenFor)
+        }
+
+        reviewers = await db.getManyUsersByUserId(reviewerIds);
+        recipients = await db.getManyUsersByUserId(recipientIds);
+
+        returnList = []
+        for (let i = 0; i < reviews.length; i++) {
+            returnList.push({
+                reviewId: reviews[i].reviewId,
+                writtenBy: `${reviewers[i].firstName} ${reviewers[i].lastName}`,
+                writtenFor: `${recipients[0].firstName} ${recipients[0].lastName}`,
+                reviewText: reviews[i].reviewText,
+                lastUpdated: reviews[i].lastUpdated,
+                isDraft: reviews[i].isDraft // drafts not implemented for now
+            })
+        }
+        res.json(returnList);
     }
 });
 
