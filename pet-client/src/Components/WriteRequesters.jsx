@@ -16,17 +16,12 @@ const NoDataIndication = () => (
     </div>
 );
 
-const rowStyle = {
-    backgroundColor: '#fff'
-};
-
 const EmptyTable = (props) => (
     <BootstrapTable
     remote
     keyField='name'
     data={ [] }
     columns={ props.columns }
-    rowStyle={rowStyle}
     noDataIndication={ () => <NoDataIndication /> }
     />
 );
@@ -39,7 +34,6 @@ class WriteRequesters extends Component {
             {dataField: 'userId', text: 'userId', hidden: true},
             {dataField: 'requestId', text:'requestId', hidden: true},
             {dataField: 'draftId', text:'draftId', hidden: true},  // will be -1 if no draft exists
-                                                                   // TODO: IMPORTANT!!
         ],
         selected: null, // will be a "row" element. This means it will have above fields
     };
@@ -92,10 +86,10 @@ class WriteRequesters extends Component {
                         data={ this.props.requests }
                         columns={ this.state.columns1 }
                         selectRow={ selectRow }
-                        rowStyle={rowStyle}
-                        trClassName={this.draftEntryNameFormat}
+                        //rowStyle={rowStyle}
+                        rowClasses={this.draftEntryNameFormat}
                         pagination={ pagination }
-                      />
+                        bootstrap4/>
                     }
                     </div>
                     <div id="writeBtnContainer">
@@ -127,7 +121,7 @@ class WriteRequesters extends Component {
         if (row.draftId !== -1) {
           return 'draftentry'
         }
-        else return '';
+        else return 'nondraftentry';
     }
 
 }
