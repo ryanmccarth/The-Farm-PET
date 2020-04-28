@@ -213,6 +213,20 @@ class PetDB {
             });
         });
     }
+
+    // Returns IDs of all employees that given ID has sent requests to
+    getPendingRequests(id) {
+        if (!this.connected) return;
+        const c = this.c
+        return new Promise((resolve) => {
+            c.query("SELECT requestedFor FROM requests WHERE requestedBy = ?", [id], function (error, results) {
+                if (error) throw error;
+                if (results.length) resolve(results);
+                else resolve(null);
+            });
+        });
+    }
+
 }
 
 module.exports = new PetDB();
