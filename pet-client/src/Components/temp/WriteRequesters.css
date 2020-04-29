@@ -1,0 +1,23 @@
+#writeRequesterContainer {
+    display: inline-block;
+    text-align: left;
+}
+
+#writeBtnContainer {
+    width: 100%;
+    text-align: right;
+}
+
+.draftentry {
+    background-color: #faf4e3;
+}
+
+.nondraftentry {
+    background-color:rgb(255, 255, 255);
+}
+
+.tableColHeader {
+    width: '100%'; 
+    background-color: '#eee';
+    color: '#000';
+}
