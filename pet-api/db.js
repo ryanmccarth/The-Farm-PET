@@ -219,10 +219,9 @@ class PetDB {
         if (!this.connected) return;
         const c = this.c
         return new Promise((resolve) => {
-            c.query("SELECT requestedFor FROM requests WHERE requestedBy = ?", [id], function (error, results) {
-                if (error) throw error;
-                if (results.length) resolve(results);
-                else resolve(null);
+            c.query("SELECT requestedFor AS id FROM requests WHERE requestedBy = ?", [id], function (error, results) {
+                if (error){ throw error; }
+                resolve(results);
             });
         });
     }

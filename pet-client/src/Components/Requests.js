@@ -20,6 +20,7 @@ class Requests extends Component {
   constructor(props){
     super(props);
     this.getEmployees();
+    this.getSentRequests();
     }
     state = {
 
@@ -31,6 +32,7 @@ class Requests extends Component {
 
       //selected list, so that we can uncheck the boxes upon submission
       selected: [],
+      nonSelectable: [],
 
       columns1: [
         {dataField: 'name',text: 'Employee Name',headerStyle: { width: '100%', backgroundColor: '#eee', color: '#000'},}
@@ -43,6 +45,23 @@ class Requests extends Component {
         successMessageVisible: false,
         failedMessageVisible: false,
     }
+
+    async getSentRequests(){
+      var url = 'api/request/' + session.userId;
+      let res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+      });
+      let requestsSent = await res.json();
+      while(!Array.isArray(requestsSent));
+      requestsSent = requestsSent.map(function(employee){return employee.id;});
+      this.setState({nonSelectable: requestsSent});
+    }
+
+    
 
     //function that initializes list of employees
     async getEmployees(){
@@ -58,7 +77,7 @@ class Requests extends Component {
 
       /* this isn't necessary because await already does that */
       //wait for the Promise to resolve first
-      // while(!Array.isArray(employees));
+      while(!Array.isArray(employees));
 
       employees = employees.filter(function(employee){return employee.id !== session.userId;})
       //then initialize the table
@@ -76,8 +95,14 @@ class Requests extends Component {
           },
           body: JSON.stringify({employeesList: this.state.employees2, userid: session.userId}),
         });
-
-        this.setState({employees2: [], selected: [], successMessageVisible: true, failedMessageVisible: false});
+        var temp = this.state.nonSelectable.slice(0);
+        var i = this.state.selected.length;
+        var j = 0;
+        while(j<i){
+          temp.push(this.state.selected[j]);
+          j++;
+        }
+        this.setState({employees2: [], selected: [], nonSelectable: temp, successMessageVisible: true, failedMessageVisible: false});
       }
       else{
         this.setState({successMessageVisible: false, failedMessageVisible: true});
@@ -174,6 +199,8 @@ class Requests extends Component {
         selectColumnPosition: 'right',
         bgColor: '#e3ffff',
         selected: this.state.selected,
+        nonSelectable: this.state.nonSelectable,
+        nonSelectableStyle: {backgroundColor: '#ffffbf'},
 
 
         onSelect: (row, isSelect, rowIndex, e) => {
@@ -217,7 +244,7 @@ class Requests extends Component {
             data={ this.state.employees1 }
             columns={ this.state.columns1 }
             selectRow={ selectRow }
-            rowStyle={rowStyle}
+            //rowStyle={rowStyle}
             pagination={ pagination }
             /></div>
             </div>
@@ -241,6 +268,7 @@ class Requests extends Component {
                 </div>
               </div>
             </div>
+            <div className = 'help'><h5>* Yellow-colored names mean that you already have a pending request for your peer.</h5></div>
         </div>
       );
     }
