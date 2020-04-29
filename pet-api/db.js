@@ -172,6 +172,21 @@ class PetDB {
             });
         });
     }
+
+    getIdsByManager(id){
+        if(!this.connected) return;
+        const c = this.c;
+
+        return new Promise((resolve) => {
+            c.query("SELECT userId FROM users WHERE managerId=?", [id], function(error, results, fields){
+                if(error) throw error;
+                if(results.length){
+                    resolve(results);
+                }
+                else resolve(null)
+            });
+        });
+    }
 }
 
 module.exports = new PetDB();
