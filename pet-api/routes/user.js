@@ -78,32 +78,18 @@ router.get('/:userId/reviews', async function(req, res, next) {
             recipientIds.push(reviews[i].writtenFor)
         }
 
-        var mappedReviewer = new Map();
-        var mappedRecipient = new Map();
-        count = 0;
-        for(let i = 0; i < reviews.length; i++){
-            if(mappedReviewer.get(reviews[i].writtenBy) == undefined){
-                mappedReviewer.set(reviews[i].writtenBy, count)
-                count++
-            }
-        }
-        count = 0;
-        for(let i = 0; i < reviews.length; i++){
-            if(mappedRecipient.get(reviews[i].writtenFor) == undefined){
-                mappedRecipient.set(reviews[i].writtenFor, count)
-                count++
-            }
-        }
-
         reviewers = await db.getManyUsersByUserId(reviewerIds);
         recipients = await db.getManyUsersByUserId(recipientIds);
-
         returnList = []
         for (let i = 0; i < reviews.length; i++) {
+
+            var reviewIndex = reviewers.findIndex(item => item.userId === reviews[i].writtenBy);
+            var recipientIndex = recipients.findIndex(item => item.userId === reviews[i].writtenFor);
+
             returnList.push({
                 reviewId: reviews[i].reviewId,
-                writtenBy: `${reviewers[mappedReviewer.get(reviews[i].writtenBy)].firstName} ${reviewers[mappedReviewer.get(reviews[i].writtenBy)].lastName}`,
-                writtenFor: `${recipients[mappedRecipient.get(reviews[i].writtenFor)].firstName} ${recipients[mappedRecipient.get(reviews[i].writtenFor)].lastName}`,
+                writtenBy: `${reviewers[reviewIndex].firstName} ${reviewers[reviewIndex].lastName}`,
+                writtenFor: `${recipients[recipientIndex].firstName} ${recipients[recipientIndex].lastName}`,
                 reviewText: reviews[i].reviewText,
                 lastUpdated: reviews[i].lastUpdated,
                 isDraft: reviews[i].isDraft
@@ -141,32 +127,19 @@ router.get('/:userId/managerReviews', async function(req, res, next) {
             recipientIds.push(reviews[i].writtenFor)
         }
 
-        var mappedReviewer = new Map();
-        var mappedRecipient = new Map();
-        count = 0;
-        for(let i = 0; i < reviews.length; i++){
-            if(mappedReviewer.get(reviews[i].writtenBy) == undefined){
-                mappedReviewer.set(reviews[i].writtenBy, count)
-                count++
-            }
-        }
-        count = 0;
-        for(let i = 0; i < reviews.length; i++){
-            if(mappedRecipient.get(reviews[i].writtenFor) == undefined){
-                mappedRecipient.set(reviews[i].writtenFor, count)
-                count++
-            }
-        }
-
         reviewers = await db.getManyUsersByUserId(reviewerIds);
         recipients = await db.getManyUsersByUserId(recipientIds);
 
         returnList = []
         for (let i = 0; i < reviews.length; i++) {
+
+            var reviewIndex = reviewers.findIndex(item => item.userId === reviews[i].writtenBy);
+            var recipientIndex = recipients.findIndex(item => item.userId === reviews[i].writtenFor);
+
             returnList.push({
                 reviewId: reviews[i].reviewId,
-                writtenBy: `${reviewers[mappedReviewer.get(reviews[i].writtenBy)].firstName} ${reviewers[mappedReviewer.get(reviews[i].writtenBy)].lastName}`,
-                writtenFor: `${recipients[mappedRecipient.get(reviews[i].writtenFor)].firstName} ${recipients[mappedRecipient.get(reviews[i].writtenFor)].lastName}`,
+                writtenBy: `${reviewers[reviewIndex].firstName} ${reviewers[reviewIndex].lastName}`,
+                writtenFor: `${recipients[recipientIndex].firstName} ${recipients[recipientIndex].lastName}`,
                 reviewText: reviews[i].reviewText,
                 lastUpdated: reviews[i].lastUpdated,
                 isDraft: reviews[i].isDraft
