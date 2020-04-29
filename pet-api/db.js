@@ -130,13 +130,28 @@ class PetDB {
 
     // Purpose: to delete a request with the given requestId
     // Input:   requestId - integer representing the desired request's requestId
-    // Output:  Promise object that returns true upon resolving
+    // Returns: Promise object that sends the query and returns true upon resolving
     deleteRequest(requestId) {
         if(!this.connected) return;
         const c = this.c;
 
         return new Promise((resolve) => {
             c.query("DELETE FROM requests WHERE requestId=?", [requestId], function(error, results, fields){
+                if(error) throw error;
+                resolve(true);
+            });
+        });
+    }
+
+    // Purpose: to delete a review with the specified reviewId
+    // Input:   reviewId - integer representing the desired review's reviewId
+    // Returns: Promise object that sends the query returns true upon resolving
+    deleteReview(reviewId) {
+        if(!this.connect) return;
+        const c = this.c;
+
+        return new Promise((resolve) => {
+            c.query("DELETE FROM reviews WHERE reviewId=?", [reviewId], function(error, results, fields){
                 if(error) throw error;
                 resolve(true);
             });
@@ -189,7 +204,7 @@ class PetDB {
         const c = this.c;
 
         return new Promise((resolve) => {
-            c.query("SELECT * FROM reviews WHERE writtenFor=?", [id], function(error, results, fields){
+            c.query("SELECT * FROM reviews WHERE (writtenFor=? AND isDraft=FALSE)", [id], function(error, results, fields){
                 if(error) throw error;
                 if(results.length){
                     resolve(results);

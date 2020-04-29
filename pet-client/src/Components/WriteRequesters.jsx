@@ -34,9 +34,30 @@ class WriteRequesters extends Component {
             {dataField: 'userId', text: 'userId', hidden: true},
             {dataField: 'requestId', text:'requestId', hidden: true},
             {dataField: 'draftId', text:'draftId', hidden: true},  // will be -1 if no draft exists
+            {dataField: 'rejectButton', text: 'Status', formatter: this.buttonFormatter.bind(this), formatExtraData: this.deleteButtonClick.bind(this)}
         ],
         selected: null, // will be a "row" element. This means it will have above fields
     };
+
+    buttonFormatter(cellContent, row, rowIndex, extraData){
+        //this.setState({selected: row});  // maybe problem?
+        return(
+        <div className="reject-button">
+            <Button
+             variant='danger'
+             onClick={()=>extraData(row)}
+            >
+                Reject
+            </Button>
+        </div>);
+    }
+
+    deleteButtonClick(row){
+        this.setState({selected: row});
+        console.log(`is it null? ${row==null}`);
+        this.props.onDeleteButton(row.requestId, row.name, row.draftId);
+        //this.render();
+    }
 
     writeButtonClick(e) {
         this.props.onRequestSelect(this.state.selected)
@@ -51,7 +72,7 @@ class WriteRequesters extends Component {
         const selectRow = {
             mode: 'radio',
             clickToSelect: true,
-            selectColumnPosition: 'right',
+            selectColumnPosition: 'left',
             bgColor: '#e3ffff',
 
             onSelect: (row, isSelect, rowIndex, e) => {

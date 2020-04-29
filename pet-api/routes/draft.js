@@ -11,4 +11,13 @@ router.get('/:draftId', async function(req, res, next) {
     res.json(draft);
 });
 
+router.delete('/:draftId', async function(req, res, next) {
+    if (!db.isConnected()) { res.status(500); return; }
+    console.log(`Deleting draft with draftId ${req.params.draftId}`);
+
+    await db.deleteReview(req.params.draftId);
+
+    res.sendStatus(200);
+});
+
 module.exports = router;

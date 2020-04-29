@@ -11,4 +11,14 @@ router.post('/', async function(req, res, next) {
     }
 });
 
+/* delete a request with a given requestId */
+router.delete('/:requestId/delete', async function(req,res) {
+    if (!db.isConnected()) { res.status(500); return; }
+    else {
+        await db.deleteRequest(req.params.requestId);
+    }
+
+    res.sendStatus(200);
+});
+
 module.exports = router;

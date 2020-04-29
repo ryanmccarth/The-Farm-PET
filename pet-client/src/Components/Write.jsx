@@ -63,10 +63,60 @@ class Write extends Component {
     this.setState({isWriting: false, request: undefined, showBottomAlert: false});
   }
 
+  // This deletes a request with the given requestId
+  // Idea: maybe change its rejectedStatus instead? ON HOLD until implementation of such field
+  async deleteRequest(requestId, requesterName, draftId){
+
+    // Check if an associated draft exists
+    if(draftId!==-1){
+      // Delete the draft 
+      const res = await fetch(`api/draft/${draftId}`, {
+          method: "DELETE",
+      });
+
+      if(res.status!==200){
+        this.setState({
+          showTopAlert: false,
+          showBottomAlert: true,
+          bottomAlertVariant: "danger",
+          bottomAlertContent: 'There was an error deleting the associated draft. Please try again.'
+        })
+      }
+      // maybe I should move the route in the review route? A draft is a review
+    }
+
+    const res = await fetch(`/api/request/${requestId}/delete`, {
+      method: "DELETE",
+    });
+
+    // Indicate success
+    if(res.status===200){
+      this.setState({
+        showTopAlert: true,
+        showBottomAlert: false,
+        topAlertVariant: "success",
+        topAlertContent: `Review request for ${requesterName} denied successfully`,
+      });
+      
+      // Refresh requests list
+      this.getRequests();
+    }
+    // Indicate failure
+    else {
+      this.setState({
+        showTopAlert: false,
+        showBottomAlert: true,
+        bottomAlertVariant: "danger",
+        bottomAlertContent: `There was an error rejecting the request. Please try again.`
+      });
+    }
+  }
+
   async submitReview(text, isDraft) {
     this.setState({isLoading: true});
     document.body.style.cursor='wait';
 
+    // NOTE! You do not need to send a delete fetch to request.js!
     const res = await fetch("/api/review", {
       method: "POST",
       headers: {
@@ -105,6 +155,7 @@ class Write extends Component {
         request: null,        // reset selected request upon success
         drafttext: ""         // reset draft text upon success
       });
+      
       // refresh requests
       this.getRequests();
     }
@@ -119,14 +170,10 @@ class Write extends Component {
     }
   }
 
+  // Purpose: retrieve draft with draftId and return its text
+  // Input:   request object
+  // Returns: string, text in the retrieved draft (review)
   async getDraft(request) {
-    // const res = await fetch();    // TODO: fix this to call review fetching function for single review
-    //                               // with parameter in body this.state.request.draftId
-
-    //console.log(`this.state.request is ${this.state.request}`)
-    //console.log(this.state.draft==null)
-    //
-
     const res = await fetch(`/api/draft/${request.draftId}`, {
       method: "GET",
       headers: {
@@ -156,7 +203,7 @@ class Write extends Component {
     //this.setState({request: request});
     let drafttext = "";
     if (request.draftId !== -1) {
-      console.log(`request is ${request}`)
+      //console.log(`request is ${request}`)
       this.setState({isLoading: true});
       document.body.style.cursor='wait';
       drafttext = await this.getDraft(request);
@@ -178,7 +225,7 @@ class Write extends Component {
         </div>
         {this.state.isWriting
         ? <WriteReview request={this.state.request} drafttext = {this.state.drafttext} onBackButton={this.backButton.bind(this)} onSubmit={this.submitReview.bind(this)} isLoading={this.state.isLoading} />
-        : <WriteRequesters onRequestSelect={this.handleRequestSelect.bind(this)} requests={this.state.requests} isLoading={this.state.isLoading} />}
+        : <WriteRequesters onRequestSelect={this.handleRequestSelect.bind(this)} onDeleteButton={this.deleteRequest.bind(this)} requests={this.state.requests} isLoading={this.state.isLoading} />}
         <div id="alert-container-bottom">
           {this.state.showBottomAlert
             ? <Alert variant={this.state.bottomAlertVariant} dismissible onClose={() => this.setState({showBottomAlert: false})}>
