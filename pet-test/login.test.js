@@ -12,9 +12,8 @@ test("Login correct credentials", async () => {
       username: "Reed_Fischer@bluellamaconsultingco.com",
       password: "fischerre",
     }),
-  });
+  }).json();
   console.log(res + "\n");
-  let resJson = res.json();
-  let token = resJson.token;
+  let token = res.token;
   expect(token).toBeTruthy();
 });

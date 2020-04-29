@@ -1,5 +1,9 @@
 version: "3"
 
+#To select this file to run: docker-compose -f ./docker-compose.test.yml
+#To give it a specific build name (ex. test): docker-compose -f ./docker-compose.test.yml -p test
+#Simply put build, start, up, etc. after the above to use commands
+
 services:
   # our backend express api
   api:
