@@ -1,0 +1,41 @@
+version: "3"
+
+#To select this file to run: docker-compose -f ./docker-compose.test.yml
+#To give it a specific build name (ex. test): docker-compose -f ./docker-compose.test.yml -p test
+#Simply put build, start, up, etc. after the above to use commands
+
+services:
+  # our backend express api
+  api:
+    build: pet-api
+    ports:
+      - "3001:3001"
+    environment:
+      - API_PORT=3001
+  # for our static frontend built with react
+  client:
+    build: pet-client
+    ports:
+      - "3000:3000"
+  # separate container for mysql db
+  db:
+    build: pet-db
+    environment:
+      MYSQL_DATABASE: "pet"
+      MYSQL_USER: "bessy"
+      MYSQL_PASSWORD: "the-cow"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - pet-db:/var/lib/mysql
+  # container for dev testing (system under tests)
+  sut:
+    build: pet-test
+    ports:
+      - "8000:8000"
+
+volumes:
+  pet-db:

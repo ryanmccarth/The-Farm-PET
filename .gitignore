@@ -3,6 +3,7 @@
 # dependencies
 /pet-api/node_modules
 /pet-client/node_modules
+/pet-test/node_modules
 /.pnp
 .pnp.js
 
