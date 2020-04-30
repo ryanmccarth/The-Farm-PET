@@ -1,3 +1,7 @@
+.removeButton{
+    text-align:center;
+}
+
 .help {
     padding-top:115px;
 }
@@ -18,7 +22,7 @@
     position:relative;
     left:600px;
     top: 56px;
-    width:325px;
+    width:425px;
     padding-left:100px;
 }
 
@@ -29,6 +33,7 @@
 .table2Shell{
     height: 450px;
     overflow-y:auto;
+    min-width:325px;
 }
 
 .button {
@@ -39,5 +44,5 @@
 
 .alerts{
     padding: 5%;
-    min-height:112.5px;
+    min-height:122.5px;
 }

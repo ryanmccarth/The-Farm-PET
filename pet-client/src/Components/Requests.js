@@ -39,12 +39,31 @@ class Requests extends Component {
         ],
 
       columns2: [
-        {dataField: 'name',text: 'Selected Employees',headerStyle: { width: '100%', backgroundColor: '#eee', color: '#000'},}
+        {dataField: 'name',text: 'Selected Employees',headerStyle: { width: '100%', backgroundColor: '#eee', color: '#000'}},
+        {dataField: 'removeButton', text: this.clearAllButton(), formatter: this.buttonFormatter.bind(this), headerStyle: (colum, colIndex) => {
+          return { width: '50%', textAlign: 'center' };
+        }}
         ],
 
         successMessageVisible: false,
         failedMessageVisible: false,
     }
+
+    clearAll(){
+      this.setState({employees2: [], selected: []});
+    }
+    clearAllButton(){
+      return(
+        <div className="clearAll"><button onClick={()=>this.clearAll()}>Clear</button></div>
+      );
+    }
+
+    buttonFormatter(cellContent, row, rowIndex, extraData){
+      return(
+      <div className="removeButton">
+          <button onClick={()=>this.removeEmployee(row)}>x</button>
+      </div>);
+  }
 
     async getSentRequests(){
       var url = 'api/request/' + session.userId;
