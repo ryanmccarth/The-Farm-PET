@@ -17,8 +17,15 @@ router.delete('/:requestId/delete', async function(req,res) {
     else {
         await db.deleteRequest(req.params.requestId);
     }
-
     res.sendStatus(200);
+});
+
+router.get('/:userid', async function(req, res) {
+    if (!db.isConnected()) { res.status(500); return; }
+    else{
+        var employees = await db.getPendingRequests(req.params.userid);
+        res.json(employees);
+    }
 });
 
 module.exports = router;

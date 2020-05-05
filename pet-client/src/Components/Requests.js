@@ -2,12 +2,16 @@ import React, { Component } from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Container from "react-bootstrap/Container";
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
-import './temp/Requests.css';
+
 import session from "../session";
 
+import "raleway-webfont";
+import './temp/General.scss';
+import './temp/Requests.css';
 
 /*
 Contains everything for a user to request reviews. Specifically, under this component, other components include:
@@ -20,6 +24,7 @@ class Requests extends Component {
   constructor(props){
     super(props);
     this.getEmployees();
+    this.getSentRequests();
     }
     state = {
 
@@ -31,18 +36,66 @@ class Requests extends Component {
 
       //selected list, so that we can uncheck the boxes upon submission
       selected: [],
+      nonSelectable: [],
 
       columns1: [
-        {dataField: 'name',text: 'Employee Name',headerStyle: { width: '100%', backgroundColor: '#eee', color: '#000'},}
+        {dataField: 'name',text: 'Employee Name',headerStyle: { width: '100%', /*backgroundColor: '#eee', color: '#000'*/}}
         ],
 
       columns2: [
-        {dataField: 'name',text: 'Selected Employees',headerStyle: { width: '100%', backgroundColor: '#eee', color: '#000'},}
+        {dataField: 'name',text: 'Selected Employees',headerStyle: { width: '100%', /*backgroundColor: '#eee', color: '#000'*/}},
+        {dataField: 'removeButton', text: this.clearAllButton(), formatter: this.buttonFormatter.bind(this), headerStyle: (colum, colIndex) => {
+          return { width: '50%', textAlign: 'center' };
+        }}
         ],
 
         successMessageVisible: false,
         failedMessageVisible: false,
     }
+
+    clearAll(){
+      this.setState({employees2: [], selected: []});
+    }
+    clearAllButton(){
+      return(
+        <div className="clearAll">
+          <Button 
+            className="themeLighterRed fontRaleway colorDark buttonOutlineDark"
+            onClick={()=>this.clearAll()}>
+              Clear
+          </Button>
+        </div>
+      );
+    }
+
+    buttonFormatter(cellContent, row, rowIndex, extraData){
+      return(
+      <div className="removeButton">
+          <Button 
+            className="themeLighterRed fontRaleway colorDark buttonOutlineDark"
+            onClick={()=>this.removeEmployee(row)}
+          >
+            x
+          </Button>
+      </div>);
+  }
+
+    async getSentRequests(){
+      var url = 'api/request/' + session.userId;
+      let res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+      });
+      let requestsSent = await res.json();
+      while(!Array.isArray(requestsSent));
+      requestsSent = requestsSent.map(function(employee){return employee.id;});
+      this.setState({nonSelectable: requestsSent});
+    }
+
+    
 
     //function that initializes list of employees
     async getEmployees(){
@@ -58,7 +111,7 @@ class Requests extends Component {
 
       /* this isn't necessary because await already does that */
       //wait for the Promise to resolve first
-      // while(!Array.isArray(employees));
+      while(!Array.isArray(employees));
 
       employees = employees.filter(function(employee){return employee.id !== session.userId;})
       //then initialize the table
@@ -76,8 +129,14 @@ class Requests extends Component {
           },
           body: JSON.stringify({employeesList: this.state.employees2, userid: session.userId}),
         });
-
-        this.setState({employees2: [], selected: [], successMessageVisible: true, failedMessageVisible: false});
+        var temp = this.state.nonSelectable.slice(0);
+        var i = this.state.selected.length;
+        var j = 0;
+        while(j<i){
+          temp.push(this.state.selected[j]);
+          j++;
+        }
+        this.setState({employees2: [], selected: [], nonSelectable: temp, successMessageVisible: true, failedMessageVisible: false});
       }
       else{
         this.setState({successMessageVisible: false, failedMessageVisible: true});
@@ -162,18 +221,48 @@ class Requests extends Component {
       this.setState({successMessageVisible: false, failedMessageVisible: false});
   }
 
+
     render() {
+
+      const myPageButtonRenderer = ({
+        page,
+        active,
+        disabled,
+        title,
+        onPageChange
+      }) => {
+        const handleClick = (e) => {
+          e.preventDefault();
+          onPageChange(page);
+        };
+
+        return (
+          <li className="page-item fontRaleway">
+            <a href="#" className={("page-link "+(active ? 'themeRed ' : 'themeWhite ')+"buttonOutlineDark colorDark")} onClick={ handleClick }>{ page }</a>
+          </li>
+        );
+      };
+
+
+      //className="fontRaleway themeLighterRed buttonOutlineDark colorDark"
+
       const pagination = paginationFactory({
       hidePageListOnlyOnePage: true,
       hideSizePerPage: true,
+      pageButtonRenderer: myPageButtonRenderer
       });
-      const { SearchBar } = Search;
+
+      const { SearchBar, ClearSearchButton } = Search;
       const selectRow = {
         mode: 'checkbox',
         clickToSelect: true,
         selectColumnPosition: 'right',
-        bgColor: '#e3ffff',
+        //bgColor: '#e3ffff',
+        style: {backgroundColor: '#3b3b3b', color: 'white'},
         selected: this.state.selected,
+        nonSelectable: this.state.nonSelectable,
+        //nonSelectableStyle: {backgroundColor: '#ffffbf !important', }, Note: I moved this to the stylesheet -Trifon
+        nonSelectableClasses: "nonSelectableRow",
 
 
         onSelect: (row, isSelect, rowIndex, e) => {
@@ -194,54 +283,75 @@ class Requests extends Component {
         }
       };
 
-      const rowStyle = {
-        backgroundColor: '#fff'
-      };
+      // const rowStyle = {
+      //   backgroundColor: '#fff'
+      // };
+
+      // const rowClasses = (row, rowIndex) => {
+      //   return ((this.state.nonSelectable[rowIndex] ? '' : "tableRowProperty"));
+      // };
 
       return (
-          <div className='outer'>
-            <h4>Requesting a Peer Review</h4>
-            <ToolkitProvider
-            keyField='name'
-            data={ this.state.employees1 }
-            columns={ this.state.columns1 }
-            search
-            >{
-             props => (
-            <div className='table1'>
-            <SearchBar {...props.searchProps} placeholder='Search name...'></SearchBar>
-            <div className='table1Shell'>
-            <BootstrapTable  {...props.baseProps}
-            hover
-            keyField='id'
-            data={ this.state.employees1 }
-            columns={ this.state.columns1 }
-            selectRow={ selectRow }
-            rowStyle={rowStyle}
-            pagination={ pagination }
-            /></div>
-            </div>
-             )}</ToolkitProvider>
-
-            <div className='table2'>
-              <div className='table2Shell'>
-            <BootstrapTable
-            hover
-            keyField='id'
-            data={ this.state.employees2 }
-            columns={ this.state.columns2 }
-            rowStyle={rowStyle}
-            /></div>
-            <div className="button"><Button variant="primary" type="submit"
-            onClick={() => this.submit()}>
-            Submit Requests</Button>
-            <div className='alerts'>
-            <Alert variant='success' show={this.state.successMessageVisible}>Success! Requests submitted.</Alert>
-            <Alert variant='danger' show={this.state.failedMessageVisible}>Select employees before submitting.</Alert>
+        <Container fluid className="themeLighterGray w-100 windowDiv">
+          <div className='outer fontRaleway'>
+            <h4 className="indentHeading">Requesting a Peer Review</h4>
+            <Container className="row justify-content-center" style={{margin: "0 auto"}}>
+              <ToolkitProvider
+                keyField='name'
+                data={ this.state.employees1 }
+                columns={ this.state.columns1 }
+                search
+              >{
+              props => (
+              <div className='table1'>
+                <SearchBar {...props.searchProps} placeholder='Search name...'></SearchBar>
+                <ClearSearchButton { ...props.searchProps } class = 'Button'/>
+                <div className='table1Shell'>
+                  <BootstrapTable  {...props.baseProps}
+                    striped
+                    hover
+                    keyField='id'
+                    data={ this.state.employees1 }
+                    columns={ this.state.columns1 }
+                    selectRow={ selectRow }
+                    headerClasses="themeDarkerGray colorWhite"
+                    bodyClasses="tableRowStyle tableHover"
+                    rowClasses="tableRowProperty"//{rowClasses}
+                    //rowStyle={rowStyle}
+                    pagination={ pagination }
+                  />
                 </div>
               </div>
-            </div>
-        </div>
+              )}
+              </ToolkitProvider>
+              <div className='table2'>
+                <div className='table2Shell'>
+                  <BootstrapTable
+                    striped
+                    hover
+                    keyField='id'
+                    data={ this.state.employees2 }
+                    columns={ this.state.columns2 }
+                    //rowStyle={rowStyle} I implemented the style using the tableRowStyle class -Trifon
+                    headerClasses="themeDarkerGray colorWhite"
+                    bodyClasses="tableRowStyle2 tableHover"
+                    rowClasses=""
+                  />
+                </div>
+                <div className="button">
+                  <Button className="themeLighterRed fontRaleway colorDark buttonOutlineDark" variant="primary" type="submit"
+                  onClick={() => this.submit()}>
+                  Submit Requests</Button>
+                  <div className='alerts'>
+                    <Alert variant='success' show={this.state.successMessageVisible}>Success! Requests submitted.</Alert>
+                    <Alert variant='danger' show={this.state.failedMessageVisible}>Select employees before submitting.</Alert>
+                  </div>
+                </div>
+              </div>
+            </Container>
+            <div className = 'help fontRaleway colorDark'><h5>* Yellow-colored names mean that you already have a pending request for your peer.</h5></div>
+          </div>
+        </Container>
       );
     }
   }

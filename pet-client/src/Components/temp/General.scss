@@ -1,0 +1,126 @@
+@import "~raleway-webfont/raleway.css";
+@import "~opensans-npm-webfont/style.css";
+/* Note: I HATE putting !important on all settings - 
+I am only doing this to fight the invasiveness and lack of 
+customizability of bootstrap */
+
+.tableRowStyle{
+    background-color: #eee;
+    color: #000;
+}
+
+.tableRowStyle2{
+    background-color: #212529;
+    color: #eee;
+}
+
+.tableRowStyle > tr > td {
+    border: 1px solid #d5d4d2 !important;
+}
+
+.tableRowStyle2 > tr >td {
+    border: 1px solid #d5d4d2 !important;
+}
+
+.tableRowProperty{
+    -webkit-transition: background-color 300ms linear;//, border 500ms linear;
+    -moz-transition: background-color 300ms linear;//, border 500ms linear;
+    -o-transition: background-color 300ms linear;//, border 500ms linear;
+    -ms-transition: background-color 300ms linear;//, border 500ms linear;
+    transition: background-color 300ms linear;//, border 500ms linear;
+
+    /*
+    -webkit-transition: border 500ms linear;
+    -moz-transition: border 500ms linear;
+    -o-transition: border 500ms linear;
+    -ms-transition: border 500ms linear;
+    transition: border 500ms;*/
+}
+
+.tableHover > tr.tableRowProperty:not(.nonSelectableRow):hover {
+    background-color:#fb5151;
+    //border: 1px solid #fb5151 !important;
+}
+
+// .draftentry:hover{
+//     background-color: #fb5151;
+// }
+
+.buttonStyleMain{
+    background-color: #fb5151 !important;
+    border-color: #212529 !important;
+    color: #212529 !important;
+}
+
+.buttonOutlineDark{
+    border-color: #212529 !important;
+}
+
+.colorWhite{
+    color: white !important;
+}
+
+.colorDark{
+    color: #212529 !important;
+}
+
+.themeDarkerGray{
+    background-color: #3b3b3b !important;
+}
+
+.themeDarkerGray > th{
+    border: 1px solid white !important;
+}
+
+.themeGray{
+    background-color: #797979 !important;
+}
+
+.themeLighterGray{
+    background-color: #d5d4d2 !important;
+}
+
+.themeLighterRed{
+    background-color: #fb5151 !important;
+}
+
+.themeRed{
+    background-color: #ca4646 !important;
+}
+
+.themeWhite{
+    background-color: white !important;
+}
+
+.fontRaleway{
+    font-family: Raleway !important;
+}
+
+.fontOpenSans{
+    font-family: "Open Sans" !important;
+}
+
+.fontStyleNormal{
+    font-weight: 400 !important;
+}
+
+// unsure whether this is an okay naming convention (regarding strong)
+.fontStyleStrong{
+    font-weight: 500 !important;
+}
+
+.fontStyleStronger{
+    font-weight: 600 !important;
+}
+
+.fontStyleStrongest{
+    font-weight: 700 !important;
+}
+
+.windowDiv{
+    min-height: 500px;
+}
+
+.nonSelectableRow{
+    background-color: #ffffbf !important;
+}

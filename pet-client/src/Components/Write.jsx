@@ -7,6 +7,8 @@ import WriteReview from './WriteReview';
 
 import session from "../session";
 
+import "raleway-webfont";
+import './temp/General.scss';
 import './temp/WriteContent.css';
 
 class Write extends Component {
@@ -214,6 +216,7 @@ class Write extends Component {
 
   render() {
     return <React.Fragment>
+      <div class="themeLighterGray w-100 windowDiv">
       <Container id="write-container">
         <div id="alert-container-top">
           {this.state.showTopAlert
@@ -235,6 +238,7 @@ class Write extends Component {
           }
         </div>
       </Container>
+      </div>
     </React.Fragment>;
   }
 }

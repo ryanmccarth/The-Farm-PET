@@ -1,38 +1,56 @@
+.removeButton{
+    text-align:center;
+}
+
+.indentHeading{
+    padding-left: 110px;
+}
+
+.help {
+    margin-top:60px;
+    margin-bottom: 20px;
+}
+
 .outer {
-    position:absolute;
-    top:100px;
-    left:350px;
+    /*position:absolute;*/
+    margin-top: 0px;
+    padding-top: 20px;
+    margin-left: 0px;
+    padding-left: 100px;
 }
 
 .table1 {
-    position:absolute;
+    /*position:absolute;*/
     width:450px;
     padding-top:10px;
 }
 
 .table2 {
-    position:relative;
-    left:600px;
-    top: 56px;
-    width:325px;
+    /*position:relative;*/
+    margin-left: 40px;
+    /*margin-top: 56px;*/
+    width:425px;
     padding-left:100px;
 }
 
 .table1Shell{
-    height:500px;
+    min-height:500px;
 }
 
 .table2Shell{
-    height: 450px;
+    margin-top: 56px;
+    height: 390px;
     overflow-y:auto;
+    min-width:325px;
 }
 
 .button {
-    position:relative;
-    top: 55px;
+    /*position:relative;*/
+    margin-top: 60px;
     text-align: center;
 }
 
 .alerts{
     padding: 5%;
+    min-height:122.5px;
 }

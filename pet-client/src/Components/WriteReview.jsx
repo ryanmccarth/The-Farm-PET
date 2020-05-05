@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
+import "raleway-webfont";
+import './temp/General.scss';
 import './temp/WriteReview.css';
 
 class WriteReview extends Component {
@@ -20,8 +22,8 @@ class WriteReview extends Component {
   }
 
   render() {
-    return<div id="writeReviewContainer">
-        <h4>Write a review for {this.props.request.name}</h4>
+    return<div id="writeReviewContainer" className="fontRaleway">
+        <h4 style={{textAlign: 'left'}}>Write a review for {this.props.request.name}</h4>
         <Form id="write-review-form" onSubmit={this.submitReview.bind(this)}>
           <Form.Group controlId="writeReviewTextarea">
             <Form.Control as="textarea" rows="6" placeholder = "Write review here..."
@@ -36,6 +38,7 @@ class WriteReview extends Component {
               style={this.props.isLoading ? { pointerEvents: 'none' } : {}}
               disabled={this.props.isLoading}
               variant = "outline-primary"
+              className="themeLighterGray colorDark buttonOutlineDark"
               onClick = {this.props.onBackButton}>
                 Back
               </Button>
@@ -45,6 +48,7 @@ class WriteReview extends Component {
               style={this.props.isLoading ? { pointerEvents: 'none'}: {}}
               disabled = {this.props.isLoading}
               variant = "outline-secondary"
+              className="themeDarkerGray colorWhite"
               onClick = {this.submitDraft.bind(this)}>
                 Save as draft
               </Button>
@@ -53,6 +57,7 @@ class WriteReview extends Component {
               style={this.props.isLoading ? { pointerEvents: 'none' } : {}}
               disabled={this.props.isLoading}
               variant = "primary"
+              className="themeLighterRed colorDark buttonOutlineDark"
               type = "submit">
                 Submit
               </Button>

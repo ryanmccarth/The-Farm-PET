@@ -8,6 +8,12 @@ import Button from "react-bootstrap/Button";
 
 import session from "../session";
 
+import loginAvatar from "../Media/the-bull-no-text.png"; 
+
+import "raleway-webfont";
+import './temp/General.scss';
+import "./temp/Login.css";
+
 class Login extends Component {
   async handleLogin(e) {
     e.preventDefault();
@@ -58,30 +64,34 @@ class Login extends Component {
 
   render() {
     return (
-      <Container className="login-container d-flex">
-        <Container className="row justify-content-center align-self-center">
-          <Form id="login-form" onSubmit={(e) => this.handleLogin(e)}>
-            <h3>Sign in</h3>
+      <div className="themeLighterGray w-100 windowDiv">
+        <Container className="login-container d-flex containerLogin">
+          <Container className="row justify-content-center" style={{margin: "0 auto"}}>
+            <div className="loginAvatar" style={{backgroundImage: `url(${loginAvatar})`}}/>
+            
+            <Form id="login-form" className="rounded mb-0 themeLighterRed formMainLogin"onSubmit={(e) => this.handleLogin(e)}>
+              <h3 className="fontRaleway">Sign in</h3>
 
-            <Form.Group controlId="email">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
-            </Form.Group>
+              <Form.Group controlId="email">
+                <Form.Label className="fontRaleway">Email address</Form.Label>
+                <Form.Control type="email" placeholder="Enter email" />
+              </Form.Group>
 
-            <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-            <Form.Group controlId="rememberMe">
-              <Form.Check type="checkbox" label="Remember me" />
-            </Form.Group>
-            <div id="login-result" />
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
+              <Form.Group controlId="password">
+                <Form.Label className="fontRaleway">Password</Form.Label>
+                <Form.Control type="password" placeholder="Password" />
+              </Form.Group>
+              <Form.Group controlId="rememberMe">
+                <Form.Check type="checkbox" label="Remember me" className="fontRaleway" />
+              </Form.Group>
+              <div id="login-result" />
+              <Button variant="light" className="colorDark" type="submit">
+                Submit
+              </Button>
+            </Form>
+          </Container>
         </Container>
-      </Container>
+      </div>
     );
   }
 }

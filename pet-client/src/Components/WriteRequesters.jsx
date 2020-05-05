@@ -6,6 +6,8 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import Spinner from 'react-bootstrap/Spinner';
 
+import "raleway-webfont";
+import './temp/General.scss';
 import './temp/WriteRequesters.css'
 
 const NoDataIndication = () => (
@@ -30,7 +32,7 @@ class WriteRequesters extends Component {
     state = {
         columns1: [
             // for implementation details, look at pet-api/routes/requests.js
-            {dataField: 'name', text: 'Employee Name', headerStyle: { width: '100%', backgroundColor: '#eee', color: '#000'},},
+            {dataField: 'name', text: 'Employee Name', headerStyle: { width: '100%', /*backgroundColor: '#eee', color: '#000'*/},},
             {dataField: 'userId', text: 'userId', hidden: true},
             {dataField: 'requestId', text:'requestId', hidden: true},
             {dataField: 'draftId', text:'draftId', hidden: true},  // will be -1 if no draft exists
@@ -44,7 +46,8 @@ class WriteRequesters extends Component {
         return(
         <div className="reject-button">
             <Button
-             variant='danger'
+             //variant='danger'
+             className="themeRed colorBlack buttonOutlineDark"
              onClick={()=>extraData(row)}
             >
                 Reject
@@ -73,7 +76,8 @@ class WriteRequesters extends Component {
             mode: 'radio',
             clickToSelect: true,
             selectColumnPosition: 'left',
-            bgColor: '#e3ffff',
+            //bgColor: '#e3ffff',
+            classes: "themeDarkerGray colorWhite",
 
             onSelect: (row, isSelect, rowIndex, e) => {
                 if(isSelect){
@@ -87,6 +91,7 @@ class WriteRequesters extends Component {
             style={this.state.selected === null || this.props.isLoading ? { pointerEvents: 'none' } : {}}
             variant = "primary"
             type = "button"
+            className="themeLighterRed colorDark buttonOutlineDark"
             onClick = {this.writeButtonClick.bind(this)}
             disabled={this.state.selected === null || this.props.isLoading}>
                 Write Review
@@ -95,18 +100,21 @@ class WriteRequesters extends Component {
 
         if (this.props.requests === undefined || this.props.requests.length) {
             return (
-                <div id="writeRequesterContainer">
+                <div id="writeRequesterContainer" className="fontRaleway">
                     <h4>The following users have requested your review</h4>
                     <p>Please select an employee to write a review for them.</p>
                     <div id='requesterTable'>
                     { this.props.requests === undefined
                     ? <EmptyTable columns={ this.state.columns1 } />
                     : <BootstrapTable
+                        striped
                         hover
                         keyField='name'
                         data={ this.props.requests }
                         columns={ this.state.columns1 }
                         selectRow={ selectRow }
+                        headerClasses="themeDarkerGray colorWhite"
+                        bodyClasses="tableRowStyle tableHover"
                         //rowStyle={rowStyle}
                         rowClasses={this.draftEntryNameFormat}
                         pagination={ pagination }
@@ -140,9 +148,9 @@ class WriteRequesters extends Component {
     // sets classname to "draftentry", referenced CSS file at top styles it
     draftEntryNameFormat(row, rowIdx) {
         if (row.draftId !== -1) {
-          return 'draftentry'
+          return 'draftentry tableRowProperty'
         }
-        else return 'nondraftentry';
+        else return 'tableRowProperty';
     }
 
 }

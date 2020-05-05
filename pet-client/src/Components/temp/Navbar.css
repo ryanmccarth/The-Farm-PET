@@ -1,0 +1,69 @@
+/*@import "~raleway-webfont/raleway.css"; This file must be changed to .scss for this to work*/
+
+.mainNav{
+    height:70px;
+    padding-left: 0px !important;
+    padding-top: 0px !important;
+    padding-right: 0px !important;
+}
+
+.navList{
+    height: 100%;
+}
+
+.navLogo{
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    margin: 0px;
+}
+
+.navButton{
+    display: block;
+    text-align: center;
+    width: 77px;
+    padding-top: 27px !important;
+    height: 100%;
+    background: transparent;
+    /*font-family: Raleway; This is now in General.scss*/
+    
+    -webkit-transition: background 300ms linear;
+    -moz-transition: background 300ms linear;
+    -o-transition: background 300ms linear;
+    -ms-transition: background 300ms linear;
+    transition: background 300ms; /* linear? */
+}
+
+.navButtonEnd{
+    display: block;
+    text-align: center;
+    width: 100px;
+    padding-top: 27px !important;
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+    height: 100%;
+    background: transparent;
+    /*font-family: Raleway; This is in General.scss*/
+
+    -webkit-transition: background 300ms linear;
+    -moz-transition: background 300ms linear;
+    -o-transition: background 300ms linear;
+    -ms-transition: background 300ms linear;
+    transition: background 300ms;
+}
+
+.navWelcome{
+    display: block;
+    /*width: 100px; not needed, makes it stick left too much*/
+    padding-top: 27px !important;
+    height: 100%;
+    /*font-family: Raleway; This is in General.scss*/
+}
+
+.navButton:hover{
+    background: #ca4646;
+}
+
+.navButtonEnd:hover{
+    background: #ca4646;
+}

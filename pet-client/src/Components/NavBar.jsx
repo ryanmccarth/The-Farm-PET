@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import ConditionalTooltip from "./ConditionalTooltip";
 import session from "../session";
+//import Image from "react-bootstrap/Image";
+import myLogo from "../Media/logo.jpg";           // Reason I'm importing them like this is that otherwise they dont work (through src=)
+import navStripe from "../Media/navbottom.png";
+
+//require()
+import "raleway-webfont";
+import './temp/General.scss';
+import './temp/Navbar.css';
 
 class NavBar extends Component {
   state = {
@@ -20,14 +28,16 @@ class NavBar extends Component {
     this.props.updateContent("login");
   }
 
+  //          <Image className="navbar-logo" src={myLogo} width="150" height="150"/>
+  // TODO: organize this into classes
+
   render() {
     const { navCollapsed } = this.state;
 
     const disabledButtonTooltip = "Log in to access this page";
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <span className="navbar-brand">PET</span>
-
+      <nav className="navbar navbar-expand-lg navbar-dark themeDarkerGray mainNav" style = {{backgroundImage: `url(${navStripe})`, backgroundSize: '100% 100%'}}>
+        <div className="navLogo" style={{backgroundImage: `url(${myLogo})`, backgroundSize: '100% 100%'}}/>
         <button
           className="navbar-toggler"
           type="button"
@@ -43,20 +53,20 @@ class NavBar extends Component {
 
         <div
           className={(navCollapsed ? "collapse" : "") + " navbar-collapse"}
-          id="navbarSupportedContent"
+          id="navbarSupportedContent" style={{height: "70px"}}
         >
-          <ul className="navbar-nav mr-auto">
+          <ul className="navList navbar-nav mr-auto">
             <li
               className={"nav-item" + (this.props.page === "read" && " active")}
             >
               <ConditionalTooltip
+                fontClass="fontRaleway"
                 tooltip={disabledButtonTooltip}
                 show={!session.exists()}
               >
                 <a
                   className={
-                    "nav-link" + (!session.exists() ? " disabled" : "")
-                  }
+                    "navButton fontRaleway nav-link" + (!session.exists() ? " disabled" : "")}
                   href="#top"
                   onClick={() => this.pageHandler("read")}
                 >
@@ -73,12 +83,13 @@ class NavBar extends Component {
               }
             >
               <ConditionalTooltip
+                fontclass="fontRaleway"
                 tooltip={disabledButtonTooltip}
                 show={!session.exists()}
               >
                 <a
                   className={
-                    "nav-link" + (!session.exists() ? " disabled" : "")
+                    "navButton fontRaleway nav-link" + (!session.exists() ? " disabled" : "")
                   }
                   href="#top"
                   onClick={() => this.pageHandler("request")}
@@ -96,12 +107,13 @@ class NavBar extends Component {
               }
             >
               <ConditionalTooltip
+                fontClass="fontRaleway"
                 tooltip={disabledButtonTooltip}
                 show={!session.exists()}
               >
                 <a
                   className={
-                    "nav-link" + (!session.exists() ? " disabled" : "")
+                    "navButton fontRaleway nav-link" + (!session.exists() ? " disabled" : "")
                   }
                   href="#top"
                   onClick={() => this.pageHandler("write")}
@@ -114,7 +126,7 @@ class NavBar extends Component {
               </ConditionalTooltip>
             </li>
           </ul>
-          <ul className="navbar-nav navbar-right">
+          <ul className="navList navbar-nav navbar-right">
             {session.exists() ? (
               /* forgive me for putting the styles here but it's way easier than creating a CSS file */
               <>
@@ -122,17 +134,17 @@ class NavBar extends Component {
                   className="nav-item"
                   style={{
                     display: "block",
-                    paddingTop: "0.5rem",
-                    paddingBottom: "0.5rem",
+                    //paddingTop: "0.5rem",
+                    //paddingBottom: "0.5rem",
                     color: "rgba(0,0,0,.5)",
                     marginRight: "0.5rem",
                   }}
                 >
-                  Hello, {session.firstName}
+                  <span className="navWelcome fontRaleway colorWhite">Hello, {session.firstName}</span>
                 </li>
                 <li className="nav-item">
                   <a
-                    className="nav-link"
+                    className="navButtonEnd fontRaleway nav-link"
                     href="top"
                     onClick={() => this.sessionLogout()}
                   >
@@ -142,7 +154,7 @@ class NavBar extends Component {
               </>
             ) : (
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <a className="navButtonEnd fontRaleway nav-link" href="#">
                   Log in
                 </a>
               </li>

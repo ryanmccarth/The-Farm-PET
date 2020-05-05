@@ -1,10 +1,14 @@
 import React from 'react';
-import './temp/ReadContent.css';
 import Button from 'react-bootstrap/Button';
 import BootstrapTable from 'react-bootstrap-table-next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import session from "../session";
+
+import "raleway-webfont";
+import "opensans-npm-webfont";
+import './temp/General.scss';
+import './temp/ReadContent.css';
 
 
 class ReadReviews extends React.Component {
@@ -13,12 +17,12 @@ class ReadReviews extends React.Component {
         super(props);
 
         const columns = [   //Declare column labels and styling
-            {dataField: 'writtenBy', text: 'Reviewers', headerStyle: {width: '15%', backgroundColor: '#eee', color: '#000', sort: false}},
-            {dataField: 'writtenFor', text: 'Recipients', headerStyle: {width: '15%', backgroundColor: '#eee', color: '#000'}, searchable: false, sort: false},
+            {dataField: 'writtenBy', text: 'Reviewers', headerStyle: {width: '15%', /*backgroundColor: '#eee', color: '#000'*/ sort: false}},
+            {dataField: 'writtenFor', text: 'Recipients', headerStyle: {width: '15%', /*backgroundColor: '#eee', color: '#000'*/}, searchable: false, sort: false},
             {dataField: 'reviewText', text: 'Reviews', formatter: (cell, obj) => {return(cell.substr(0,80))}, //formatter allows for truncation
-            headerStyle: {width: '45%', backgroundColor: '#eee', color: '#000'}, searchable: false, sort: false},
+            headerStyle: {width: '45%', /*backgroundColor: '#eee', color: '#000'*/}, searchable: false, sort: false},
             {dataField: 'lastUpdated', text: 'Date', formatter: (cell, obj) => {return(cell.substr(0,10))}, 
-            headerStyle: {width: '10%', backgroundColor: '#eee', color: '#000'}, searchable: false, sort: true}
+            headerStyle: {width: '10%', /*backgroundColor: '#eee', color: '#000'*/}, searchable: false, sort: true}
         ]
 
         this.state = {
@@ -94,11 +98,11 @@ class ReadReviews extends React.Component {
 
         const { SearchBar, ClearSearchButton } = Search;
         
-        var yourButton = <Button variant = "outline-primary" disabled class = 'Button'>My reviews</Button>
-        var managerButton = <Button variant = "outline-primary" active onClick = {() => this.managerViewToggle("manager")}>My employees' reviews</Button>
+        var yourButton = <Button variant = "outline-primary" disabled className = "Button themeDarkerGray fontRaleway colorWhite buttonOutlineDark fontStyleStrong" style={{marginRight: '2px'}}>My reviews</Button>
+        var managerButton = <Button variant = "outline-primary" active className = "Button themeLighterRed fontRaleway colorDark buttonOutlineDark"onClick = {() => this.managerViewToggle("manager")}>My employees' reviews</Button>
         if(this.state.managerView === true){
-            managerButton = <Button variant = "outline-primary" disabled class = 'Button'>My employees' reviews</Button>
-            yourButton = <Button variant = "outline-primary" active onClick = {() => this.managerViewToggle("employee")}>My reviews</Button>
+            managerButton = <Button variant = "outline-primary" disabled className = "Button themeDarkerGray fontRaleway colorWhite buttonOutlineDark fontStyleStrong">My employees' reviews</Button>
+            yourButton = <Button variant = "outline-primary" active className = "Button themeLighterRed fontRaleway colorDark buttonOutlineDark" style={{marginRight: '2px'}} onClick = {() => this.managerViewToggle("employee")}>My reviews</Button>
         }
 
         const defaultSorted = [{
@@ -111,46 +115,52 @@ class ReadReviews extends React.Component {
                 if(!props.showReview){  //detect whether a full review should be showing or not
                     return(
                         <div>
-                            <div class = 'SearchbarSpacing'>
-                                <h4>Your Reviews</h4>
-                            </div>
-                            <ToolkitProvider    //provides search functionality
-                                keyField = 'writtenBy'
-                                data = {this.state.myData}
-                                columns = {this.state.columns}
-                                search
-                            >{ props => (
-                                <div>
-                                    <div class = 'SearchbarSpacing'>
-                                        <SearchBar {...props.searchProps} placeholder = "Search Reviewer..."/>
-                                        <ClearSearchButton { ...props.searchProps } class = 'Button'/>
-                                        {yourButton}
-                                        {managerButton}
-                                    </div>
-                                    <hr/>
-                                    <div class = 'TableSize'>
-                                        <BootstrapTable {...props.baseProps}
-                                            striped
-                                            hover
-                                            rowEvents = {rowEvents}
-                                            keyField = 'lastUpdated'
-                                            data = {this.state.myData}
-                                            columns = {this.state.columns}
-                                            defaultSorted = {defaultSorted}
-                                        ></BootstrapTable>
-                                    </div>
+                            <div class="themeLighterGray w-100 windowDiv">
+                                <div class = 'SearchbarSpacing fontRaleway' style={{paddingTop: "20px"}}>
+                                    <h4>Your Reviews</h4>
                                 </div>
-                            )
-                            }</ToolkitProvider>
+                                <ToolkitProvider    //provides search functionality
+                                    keyField = 'writtenBy'
+                                    data = {this.state.myData}
+                                    columns = {this.state.columns}
+                                    search
+                                >{ props => (
+                                    <div>
+                                        <div class = 'SearchbarSpacing fontRaleway'>
+                                            <SearchBar {...props.searchProps} placeholder = "Search Reviewer..."/>
+                                            <ClearSearchButton { ...props.searchProps } class = 'Button'/>
+                                            {yourButton}
+                                            {managerButton}
+                                        </div>
+                                        <hr/>
+                                        <div class = 'TableSize fontRaleway'>
+                                            <BootstrapTable {...props.baseProps}
+                                                striped
+                                                hover
+                                                rowEvents = {rowEvents}
+                                                keyField = 'lastUpdated'
+                                                data = {this.state.myData}
+                                                columns = {this.state.columns}
+                                                headerClasses="themeDarkerGray colorWhite"
+                                                bodyClasses="tableRowStyle tableHover"
+                                                rowClasses="tableRowProperty"
+                                                defaultSorted = {defaultSorted}
+                                            ></BootstrapTable>
+                                
+                                        </div>
+                                    </div>
+                                    )}
+                                </ToolkitProvider>
+                            </div>
                         </div>
                     )
                 }
                 return(
                     <div>
-                        <p class = "FullReview">
+                        <p class = "FullReview fontOpenSans">
                             {props.clicked.reviewText}
                             <hr />
-                            <Button variant = "primary" onClick = {() => this.handlerClick(-1)}>Return</Button>
+                            <Button className="themeLighterRed fontRaleway colorDark buttonOutlineDark" onClick = {() => this.handlerClick(-1)}>Return</Button>
                         </p>
                     </div>)
             }

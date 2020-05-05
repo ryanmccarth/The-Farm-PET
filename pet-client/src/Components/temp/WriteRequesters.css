@@ -8,8 +8,8 @@
     text-align: right;
 }
 
-.draftentry {
-    background-color: #faf4e3;
+.draftentry:not(.themeDarkerGray) {
+    background-color: #ffffbf !important;
 }
 
 .nondraftentry {
