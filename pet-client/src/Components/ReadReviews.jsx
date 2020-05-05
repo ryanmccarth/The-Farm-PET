@@ -13,40 +13,59 @@ class ReadReviews extends React.Component {
         super(props);
 
         const columns = [   //Declare column labels and styling
-            {dataField: 'writtenBy', text: 'Reviewers', headerStyle: {width: '15%', backgroundColor: '#eee', color: '#000'}},
-            {dataField: 'writtenFor', text: 'Recipients', headerStyle: {width: '15%', backgroundColor: '#eee', color: '#000'}, searchable: false},
+            {dataField: 'writtenBy', text: 'Reviewers', headerStyle: {width: '15%', backgroundColor: '#eee', color: '#000', sort: false}},
+            {dataField: 'writtenFor', text: 'Recipients', headerStyle: {width: '15%', backgroundColor: '#eee', color: '#000'}, searchable: false, sort: false},
             {dataField: 'reviewText', text: 'Reviews', formatter: (cell, obj) => {return(cell.substr(0,80))}, //formatter allows for truncation
-            headerStyle: {width: '45%', backgroundColor: '#eee', color: '#000'}, searchable: false},
+            headerStyle: {width: '45%', backgroundColor: '#eee', color: '#000'}, searchable: false, sort: false},
             {dataField: 'lastUpdated', text: 'Date', formatter: (cell, obj) => {return(cell.substr(0,10))}, 
-            headerStyle: {width: '10%', backgroundColor: '#eee', color: '#000'}, searchable: false}
+            headerStyle: {width: '10%', backgroundColor: '#eee', color: '#000'}, searchable: false, sort: true}
         ]
-        this.getReviews()
 
         this.state = {
             fetch: false,
             clicked: -1,
             showReview: false,
             columns,
-            myData: []
+            myData: [],
+            managerView: false,
         }
+
+        this.getReviews(this.state.managerView)
         this.handlerClick = this.handlerClick.bind(this);
+        this.managerViewToggle = this.managerViewToggle.bind(this);
     }
 
-    async getReviews(){
-        let res = await fetch(`/api/user/${session.userId}/reviews`, {
-          method: 'GET',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-        });
-        let reviews = await res.json();
-        console.log(reviews)
-  
-        //wait for the Promise to resolve first
-        while(!Array.isArray(reviews));
-        //then initialize the table
-        this.setState({myData: reviews});
+    async getReviews(manager){
+        if(manager === false){
+            let res = await fetch(`/api/user/${session.userId}/reviews`, {
+            method: 'GET',
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            });
+            let reviews = await res.json();
+    
+            //wait for the Promise to resolve first
+            while(!Array.isArray(reviews));
+            //then initialize the table
+            this.setState({myData: reviews});
+        }
+        else{
+            let res = await fetch(`/api/user/${session.userId}/managerReviews`, {
+                method: 'GET',
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                });
+                let reviews = await res.json();
+        
+                //wait for the Promise to resolve first
+                while(!Array.isArray(reviews));
+                //then initialize the table
+                this.setState({myData: reviews});
+        }
     }
 
     componentDidMount(){    //Adding this fixed a double-rendering issue, where a previous component state would be rendered.
@@ -56,6 +75,16 @@ class ReadReviews extends React.Component {
     handlerClick(row){
         this.setState({clicked: row, showReview: !this.state.showReview})
     }
+    managerViewToggle(button){
+        if(button === "employee"){
+            this.setState({managerView: false})
+            this.getReviews(false)
+        }
+        if(button === "manager"){
+            this.setState({managerView: true})
+            this.getReviews(true)
+        }
+    }
     render(){
         const rowEvents = { //do this on rowClick
             onClick: (e, row, rowIndex) => {
@@ -64,6 +93,18 @@ class ReadReviews extends React.Component {
         };
 
         const { SearchBar, ClearSearchButton } = Search;
+        
+        var yourButton = <Button variant = "outline-primary" disabled class = 'Button'>My reviews</Button>
+        var managerButton = <Button variant = "outline-primary" active onClick = {() => this.managerViewToggle("manager")}>My employees' reviews</Button>
+        if(this.state.managerView === true){
+            managerButton = <Button variant = "outline-primary" disabled class = 'Button'>My employees' reviews</Button>
+            yourButton = <Button variant = "outline-primary" active onClick = {() => this.managerViewToggle("employee")}>My reviews</Button>
+        }
+
+        const defaultSorted = [{
+            dataField: 'lastUpdated',
+            order: 'desc'
+        }];
 
         const Extract = (props) => {
             if(props.fetch){    //ensure React is rendering correctly
@@ -82,7 +123,9 @@ class ReadReviews extends React.Component {
                                 <div>
                                     <div class = 'SearchbarSpacing'>
                                         <SearchBar {...props.searchProps} placeholder = "Search Reviewer..."/>
-                                        <ClearSearchButton { ...props.searchProps } />
+                                        <ClearSearchButton { ...props.searchProps } class = 'Button'/>
+                                        {yourButton}
+                                        {managerButton}
                                     </div>
                                     <hr/>
                                     <div class = 'TableSize'>
@@ -90,9 +133,10 @@ class ReadReviews extends React.Component {
                                             striped
                                             hover
                                             rowEvents = {rowEvents}
-                                            keyField = 'writtenBy'
+                                            keyField = 'lastUpdated'
                                             data = {this.state.myData}
                                             columns = {this.state.columns}
+                                            defaultSorted = {defaultSorted}
                                         ></BootstrapTable>
                                     </div>
                                 </div>
