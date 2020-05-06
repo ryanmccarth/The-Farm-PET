@@ -8,6 +8,21 @@
   margin-right: 150px;
 }
 
-body {
-  min-height: 100vh;
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+#root nav {
+  flex: 0 1 auto;
+}
+
+#root .content {
+  flex: 1 1 auto;
 }

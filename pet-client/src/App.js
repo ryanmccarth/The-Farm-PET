@@ -26,11 +26,13 @@ class App extends Component {
           updateContent={this.updateContent}
           updateSession={this.updateSession}
         />
-        <Cont
-          page={this.state.currentPage}
-          updateContent={this.updateContent}
-          updateSession={this.updateSession}
-        />
+        <div class="content">
+          <Cont
+            page={this.state.currentPage}
+            updateContent={this.updateContent}
+            updateSession={this.updateSession}
+          />
+        </div>
       </React.Fragment>
     );
   }

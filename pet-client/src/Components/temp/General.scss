@@ -1,7 +1,7 @@
 @import "~raleway-webfont/raleway.css";
 @import "~opensans-npm-webfont/style.css";
-/* Note: I HATE putting !important on all settings - 
-I am only doing this to fight the invasiveness and lack of 
+/* Note: I HATE putting !important on all settings -
+I am only doing this to fight the invasiveness and lack of
 customizability of bootstrap */
 
 .tableRowStyle{
@@ -20,6 +20,10 @@ customizability of bootstrap */
 
 .tableRowStyle2 > tr >td {
     border: 1px solid #d5d4d2 !important;
+}
+
+.tableRowStyle2 > tr:hover {
+    color: #eee!important;
 }
 
 .tableRowProperty{
@@ -118,7 +122,7 @@ customizability of bootstrap */
 }
 
 .windowDiv{
-    min-height: 500px;
+    min-height: 100%;
 }
 
 .nonSelectableRow{

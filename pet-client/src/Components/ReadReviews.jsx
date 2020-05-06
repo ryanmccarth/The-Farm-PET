@@ -21,7 +21,7 @@ class ReadReviews extends React.Component {
             {dataField: 'writtenFor', text: 'Recipients', headerStyle: {width: '15%', /*backgroundColor: '#eee', color: '#000'*/}, searchable: false, sort: false},
             {dataField: 'reviewText', text: 'Reviews', formatter: (cell, obj) => {return(cell.substr(0,80))}, //formatter allows for truncation
             headerStyle: {width: '45%', /*backgroundColor: '#eee', color: '#000'*/}, searchable: false, sort: false},
-            {dataField: 'lastUpdated', text: 'Date', formatter: (cell, obj) => {return(cell.substr(0,10))}, 
+            {dataField: 'lastUpdated', text: 'Date', formatter: (cell, obj) => {return(cell.substr(0,10))},
             headerStyle: {width: '10%', /*backgroundColor: '#eee', color: '#000'*/}, searchable: false, sort: true}
         ]
 
@@ -49,7 +49,7 @@ class ReadReviews extends React.Component {
             },
             });
             let reviews = await res.json();
-    
+
             //wait for the Promise to resolve first
             while(!Array.isArray(reviews));
             //then initialize the table
@@ -64,7 +64,7 @@ class ReadReviews extends React.Component {
                 },
                 });
                 let reviews = await res.json();
-        
+
                 //wait for the Promise to resolve first
                 while(!Array.isArray(reviews));
                 //then initialize the table
@@ -97,7 +97,7 @@ class ReadReviews extends React.Component {
         };
 
         const { SearchBar, ClearSearchButton } = Search;
-        
+
         var yourButton = <Button variant = "outline-primary" disabled className = "Button themeDarkerGray fontRaleway colorWhite buttonOutlineDark fontStyleStrong" style={{marginRight: '2px'}}>My reviews</Button>
         var managerButton = <Button variant = "outline-primary" active className = "Button themeLighterRed fontRaleway colorDark buttonOutlineDark"onClick = {() => this.managerViewToggle("manager")}>My employees' reviews</Button>
         if(this.state.managerView === true){
@@ -114,44 +114,42 @@ class ReadReviews extends React.Component {
             if(props.fetch){    //ensure React is rendering correctly
                 if(!props.showReview){  //detect whether a full review should be showing or not
                     return(
-                        <div>
-                            <div class="themeLighterGray w-100 windowDiv">
-                                <div class = 'SearchbarSpacing fontRaleway' style={{paddingTop: "20px"}}>
-                                    <h4>Your Reviews</h4>
-                                </div>
-                                <ToolkitProvider    //provides search functionality
-                                    keyField = 'writtenBy'
-                                    data = {this.state.myData}
-                                    columns = {this.state.columns}
-                                    search
-                                >{ props => (
-                                    <div>
-                                        <div class = 'SearchbarSpacing fontRaleway'>
-                                            <SearchBar {...props.searchProps} placeholder = "Search Reviewer..."/>
-                                            <ClearSearchButton { ...props.searchProps } class = 'Button'/>
-                                            {yourButton}
-                                            {managerButton}
-                                        </div>
-                                        <hr/>
-                                        <div class = 'TableSize fontRaleway'>
-                                            <BootstrapTable {...props.baseProps}
-                                                striped
-                                                hover
-                                                rowEvents = {rowEvents}
-                                                keyField = 'lastUpdated'
-                                                data = {this.state.myData}
-                                                columns = {this.state.columns}
-                                                headerClasses="themeDarkerGray colorWhite"
-                                                bodyClasses="tableRowStyle tableHover"
-                                                rowClasses="tableRowProperty"
-                                                defaultSorted = {defaultSorted}
-                                            ></BootstrapTable>
-                                
-                                        </div>
-                                    </div>
-                                    )}
-                                </ToolkitProvider>
+                        <div class="themeLighterGray w-100 windowDiv">
+                            <div class = 'SearchbarSpacing fontRaleway' style={{paddingTop: "20px"}}>
+                                <h4>Your Reviews</h4>
                             </div>
+                            <ToolkitProvider    //provides search functionality
+                                keyField = 'writtenBy'
+                                data = {this.state.myData}
+                                columns = {this.state.columns}
+                                search
+                            >{ props => (
+                                <div>
+                                    <div class = 'SearchbarSpacing fontRaleway'>
+                                        <SearchBar {...props.searchProps} placeholder = "Search Reviewer..."/>
+                                        <ClearSearchButton { ...props.searchProps } class = 'Button'/>
+                                        {yourButton}
+                                        {managerButton}
+                                    </div>
+                                    <hr/>
+                                    <div class = 'TableSize fontRaleway'>
+                                        <BootstrapTable {...props.baseProps}
+                                            striped
+                                            hover
+                                            rowEvents = {rowEvents}
+                                            keyField = 'lastUpdated'
+                                            data = {this.state.myData}
+                                            columns = {this.state.columns}
+                                            headerClasses="themeDarkerGray colorWhite"
+                                            bodyClasses="tableRowStyle tableHover"
+                                            rowClasses="tableRowProperty"
+                                            defaultSorted = {defaultSorted}
+                                        ></BootstrapTable>
+
+                                    </div>
+                                </div>
+                                )}
+                            </ToolkitProvider>
                         </div>
                     )
                 }
