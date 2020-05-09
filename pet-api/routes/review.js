@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
+const asyncHandler = require('express-async-handler')
 
 var db = require('../db');
 
 /* handle a request to write or edit a review */
-router.post('/', async function(req, res, next) {
+router.post('/', asyncHandler(async function(req, res, next) {
 	if (!db.isConnected()) { res.status(500); return; }
 
     if (!req.body || (!req.body.reviewerId && !req.body.reviewId)) {
@@ -27,6 +28,6 @@ router.post('/', async function(req, res, next) {
     }
 
     res.sendStatus(200);
-});
+}));
 
 module.exports = router;

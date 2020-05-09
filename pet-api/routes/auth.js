@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
+const asyncHandler = require('express-async-handler')
 var bcrypt = require('bcrypt');
 var db = require('../db');
 
 /* handle login request, returning an auth token if successful */
-router.post('/', async function(req, res, next) {
+router.post('/', asyncHandler(async function(req, res, next) {
 	if (!db.isConnected()) { res.status(500); return; }
 	if (!req.body || req.body.username === undefined || req.body.password === undefined) {
 		res.status(400).json({message: "login request must contain username and password"});
@@ -25,6 +26,6 @@ router.post('/', async function(req, res, next) {
 	} else {
 		res.status(401).json({message: "invalid email or password"});
 	}
-});
+}));
 
 module.exports = router;

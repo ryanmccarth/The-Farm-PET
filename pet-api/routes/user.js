@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
+const asyncHandler = require('express-async-handler')
 var db = require('../db');
 
 /* get requests sent to a given user */
-router.get('/:userId/requests', async function(req, res, next) {
+router.get('/:userId/requests', asyncHandler(async function(req, res, next) {
     if (!db.isConnected()) { res.status(500); return; }
     console.log("Getting requests for userId " + req.params.userId);
 
@@ -27,17 +28,17 @@ router.get('/:userId/requests', async function(req, res, next) {
     // draft structure:
     // [0] draft
     //     "writtenFor": user Id of requster
-    //     "reviewId": Id of the draft (which is actually a review) 
+    //     "reviewId": Id of the draft (which is actually a review)
     // [1] draft etc...
     drafts = await db.getDraftInfoWrittenBy(req.params.userId);
-    
+
     // create array of same size as requests, as to match draft to request by index
     let draftmatcharry = new Array(requests.length);
     draftmatcharry.fill(-1);
 
     // compare each draft (outer) to each request/user (inner) and assing draftId to correct index
-    for(let draftindex = 0; draftindex < drafts.length; draftindex++){             
-        for(let requestindex = 0; requestindex < requests.length; requestindex++){ 
+    for(let draftindex = 0; draftindex < drafts.length; draftindex++){
+        for(let requestindex = 0; requestindex < requests.length; requestindex++){
             if(drafts[draftindex].writtenFor === users[requestindex].userId){
                 draftmatcharry[requestindex] = drafts[draftindex].reviewId;        // assign draft Id to corresponding request index
                 break;
@@ -81,10 +82,10 @@ router.get('/:userId/requests', async function(req, res, next) {
     //     {name: "John Smith", userId: 13, requestId: 134, draftId: 999},
     //     {name: "Test Name", userId: 14, requestId: 134, draftId: -1}
     // ]);
-});
+}));
 
 /* get reviews written for a given user */
-router.get('/:userId/reviews', async function(req, res, next) {
+router.get('/:userId/reviews', asyncHandler(async function(req, res, next) {
     if (!db.isConnected()) { res.status(500); return; }
     reviews = await db.getReviewsById(req.params.userId);
     if(reviews == null){
@@ -119,10 +120,10 @@ router.get('/:userId/reviews', async function(req, res, next) {
         }
         res.json(returnList);
     }
-});
+}));
 
 /* get reviews for all employees under a manager*/
-router.get('/:userId/managerReviews', async function(req, res, next) {
+router.get('/:userId/managerReviews', asyncHandler(async function(req, res, next) {
     if (!db.isConnected()) { res.status(500); return; }
     reviews = [];
     users = await db.getIdsByManager(req.params.userId)
@@ -169,5 +170,5 @@ router.get('/:userId/managerReviews', async function(req, res, next) {
         }
         res.json(returnList);
     }
-});
+}));
 module.exports = router;
